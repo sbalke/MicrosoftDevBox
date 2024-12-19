@@ -8,10 +8,12 @@ properties:
       ### Updates required before apply configurations
       ########################################################
       ### Enable: PowerShell
+      ### Install: Microsoft.AppInstaller.Updates
       ### Install PSDscResources
       ### Enable: WinGet
       ### Enable: AppInstaller
       ### Enable: AppInstallerFileBuilder
+      ### Install: Winget.Upgrade
       ### Enable: DevHome
       ### Enable: DevHome Azure Extension
       ### Enable: DevHome GitHub Extension
@@ -105,6 +107,18 @@ properties:
         SetScript: |
           $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
           winget install Microsoft.AppInstallerFileBuilder --accept-package-agreements --force	
+        GetScript: return $false
+        TestScript: return $false
+      dependsOn:
+        - Microsoft.AppInstaller
+    - resource: PSDscResources/Script
+      id: Winget.Upgrade
+      directives:
+        description: Upgrades all winget packages
+      settings:
+        SetScript: |
+          $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
+          winget upgrade --all --accept-package-agreements --force	
         GetScript: return $false
         TestScript: return $false
       dependsOn:
@@ -208,3 +222,4 @@ properties:
         source: winget
       dependsOn:
         - Microsoft.AppInstaller
+    
