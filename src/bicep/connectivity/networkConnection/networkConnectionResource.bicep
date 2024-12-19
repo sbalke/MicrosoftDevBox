@@ -15,6 +15,9 @@ param virtualNetworkResourceGroupName string
 ])
 param domainJoinType string
 
+@description('Tags for the network connection')
+param tags object = {}
+
 @description('Existing virtual network')
 resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-03-01' existing = {
   name: virtualNetworkName
@@ -31,6 +34,7 @@ resource subnet 'Microsoft.Network/virtualNetworks/subnets@2024-03-01' existing 
 resource networkConnection 'Microsoft.DevCenter/networkConnections@2024-10-01-preview' = {
   name: 'netCon-${subnetName}-${uniqueString(resourceGroup().id, '${virtualNetworkName}-${subnetName}')}'
   location: resourceGroup().location
+  tags: tags
   properties: {
     subnetId: subnet.id
     domainJoinType: domainJoinType

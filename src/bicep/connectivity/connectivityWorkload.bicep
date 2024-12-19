@@ -55,6 +55,7 @@ module networkConnection 'networkConnection/networkConnectionResource.bicep' = [
       subnetName: virtualNetwork.outputs.virtualNetworkSubnets[i].name
       virtualNetworkResourceGroupName: connectivityResourceGroupName
       domainJoinType: netConnection.networkConnection.domainJoinType
+      tags: tags
     }
   }
 ]
