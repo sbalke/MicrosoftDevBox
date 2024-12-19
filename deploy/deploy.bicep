@@ -76,7 +76,7 @@ var contosoProjectsInfo = [
   }
   {
     name: 'Contoso-Traders'
-    networkConnectionName: connectivityResources.outputs.networkConnectionsCreated[0].name
+    networkConnectionName: connectivityResources.outputs.networkConnectionsCreated[1].name
     catalogs: [
       {
         catalogName: 'imageDefinitions'
