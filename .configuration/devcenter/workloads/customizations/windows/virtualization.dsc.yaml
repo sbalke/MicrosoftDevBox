@@ -13,12 +13,25 @@ properties:
         description: Enables Windows Features, and Install Ubuntu for WSL
       settings:
         SetScript: |
+          Write-Verbose "Setting environment path"
           $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-          Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -All -NoRestart
-          Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -All -NoRestart
-          Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All -NoRestart
-          Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-Hypervisor -All -NoRestart
+          
+          Write-Verbose "Enabling VirtualMachinePlatform feature"
+          Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -All -Force -Verbose -NoRestart
+          
+          Write-Verbose "Enabling Microsoft-Windows-Subsystem-Linux feature"
+          Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -All -Force -Verbose -NoRestart
+          
+          Write-Verbose "Enabling Microsoft-Hyper-V feature"
+          Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All -Force -Verbose -NoRestart
+          
+          Write-Verbose "Enabling Microsoft-Hyper-V-Hypervisor feature"
+          Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-Hypervisor -All -Force -Verbose -NoRestart
+          
+          Write-Verbose "Installing Ubuntu for WSL"
           wsl --install -d Ubuntu --no-launch
+          
+          Write-Verbose "Restarting computer"
           Restart-Computer
         GetScript: return $false
         TestScript: return $false
