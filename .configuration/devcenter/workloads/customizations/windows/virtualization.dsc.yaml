@@ -5,7 +5,7 @@ properties:
   ### Install: WSL and Ubuntu
   ########################################
   resources:
-    ### Configure Install Ubuntu
+    ### Install Windows Subsystem for Linux (WSL)
     ### -------------------------------------
     - resource: PSDscResources/Script
       id: Microsoft-Windows-Subsystem-Linux
@@ -15,23 +15,9 @@ properties:
         SetScript: |
           Write-Verbose "Setting environment path"
           $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-          
-          Write-Verbose "Enabling VirtualMachinePlatform feature"
-          Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -All -Force -Verbose -NoRestart
-          
-          Write-Verbose "Enabling Microsoft-Windows-Subsystem-Linux feature"
-          Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -All -Force -Verbose -NoRestart
-          
-          Write-Verbose "Enabling Microsoft-Hyper-V feature"
-          Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All -Force -Verbose -NoRestart
-          
-          Write-Verbose "Enabling Microsoft-Hyper-V-Hypervisor feature"
-          Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-Hypervisor -All -Force -Verbose -NoRestart
-          
-          Write-Verbose "Installing Ubuntu for WSL"
-          wsl --install -d Ubuntu --no-launch
-          
-          Write-Verbose "Restarting computer"
-          Restart-Computer
+                  
+          Write-Verbose "Windows System for Linux (WSL) Install"
+          wsl --install --no-launch
+
         GetScript: return $false
         TestScript: return $false
