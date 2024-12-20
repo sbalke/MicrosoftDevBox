@@ -19,5 +19,6 @@ properties:
           Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All -NoRestart
           Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-Hypervisor -All -NoRestart
           wsl --install -d Ubuntu --no-launch
+          Restart-Computer
         GetScript: return $false
         TestScript: return $false
