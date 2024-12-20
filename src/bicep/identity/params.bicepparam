@@ -1,7 +1,7 @@
 using 'identityModule.bicep'
 
 @description('Workload Name')
-param workloadName = 'myworkloadname'
+param workloadName  = 'Contoso'
 
 @description('Workload Role Definitions Ids')
 param workloadRoleDefinitionsids = [

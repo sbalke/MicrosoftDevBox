@@ -1,10 +1,7 @@
 using 'deploy.bicep'
 
 @description('Workload Name')
-param workloadName  = 'myWorkload'
-
-@description('Connectivity Resource Group Name')
-param connectivityResourceGroupName = 'myConnectivityResourceGroup'
+param workloadName  = 'Contoso'
 
 @description('Connectivity Info')
 param contosoConnectivityInfo = [
@@ -34,7 +31,7 @@ param contosoDevCenterCatalogInfo = {
   type: 'GitHub'
   uri: 'https://github.com/Evilazaro/DevExp-DevBox.git'
   branch: 'main'
-  path: '/customizations/tasks'
+  path: '/.configuration/devcenter/customizations/tasks'
 }
 
 @description('Environment Types Info')

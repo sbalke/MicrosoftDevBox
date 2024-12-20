@@ -1,7 +1,7 @@
 using 'devExWorkload.bicep'
 
 @description('Workload Name')
-param workloadName  = 'myWorkload'
+param workloadName  = 'Contoso'
 
 @description('Connectivity Info')
 param networkConnectionsCreated = [
@@ -26,7 +26,7 @@ param contosoDevCenterCatalogInfo = {
   type: 'GitHub'
   uri: 'https://github.com/Evilazaro/DevExp-DevBox.git'
   branch: 'main'
-  path: '/customizations/tasks'
+  path: '/.configuration/devcenter/customizations/tasks'
 }
 
 @description('Environment Types Info')
@@ -125,13 +125,13 @@ param contosoProjectsInfo = [
         catalogName: 'imageDefinitions'
         uri: 'https://github.com/Evilazaro/eShop.git'
         branch: 'main'
-        path: '/devEx/customizations'
+        path: '/.configurations/environments'
       }
       {
         catalogName: 'environments'
         uri: 'https://github.com/Evilazaro/eShop.git'
         branch: 'main'
-        path: '/devEx/environments'
+        path: '/.configurations/environments'
       }
     ]
     tags: {
@@ -153,13 +153,13 @@ param contosoProjectsInfo = [
         catalogName: 'imageDefinitions'
         uri: 'https://github.com/Evilazaro/contosotraders.git'
         branch: 'main'
-        path: '/devEx/customizations'
+        path: '/.configurations/environments'
       }
       {
         catalogName: 'environments'
         uri: 'https://github.com/Evilazaro/contosotraders.git'
         branch: 'main'
-        path: '/devEx/environments'
+        path: '/.configurations/environments'
       }
     ]
     tags: {
