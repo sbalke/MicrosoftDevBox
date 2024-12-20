@@ -8,12 +8,16 @@ properties:
     ### Configure Install Ubuntu
     ### -------------------------------------
     - resource: PSDscResources/Script
-      id: ubuntuwsl
+      id: Microsoft-Windows-Subsystem-Linux
       directives:
-        description: Install Ubuntu for WSL
+        description: Enables Windows Features, and Install Ubuntu for WSL
       settings:
         SetScript: |
           $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
+          Enable-WindowsOptionalFeature -Online -FeatureName VirtualMachinePlatform -All -NoRestart
+          Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -All -NoRestart
+          Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V -All -NoRestart
+          Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Hyper-V-Hypervisor -All -NoRestart
           wsl --install -d Ubuntu --no-launch
         GetScript: return $false
         TestScript: return $false

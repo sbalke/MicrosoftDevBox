@@ -1,10 +1,10 @@
 using 'connectivityWorkload.bicep'
 
 @description('Workload name')
-param workloadName = 'myWorkloadName'
+param workloadName  = 'Contoso'
 
 @description('Connectivity Resource Group Name')
-param connectivityResourceGroupName = 'myConnectivityResourceGroupName'
+param connectivityResourceGroupName = '${workloadName}-Network-rg'
 
 @description('Connectivity Info')
 param contosoConnectivityInfo = [
