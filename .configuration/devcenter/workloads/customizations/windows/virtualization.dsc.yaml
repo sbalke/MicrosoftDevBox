@@ -21,6 +21,8 @@ properties:
 
         GetScript: return $false
         TestScript: return $false
+      ### Install Ubuntu for WSL
+      ### ---------------------
     - resource: PSDscResources/Script
       id: Ubuntu
       directives:
