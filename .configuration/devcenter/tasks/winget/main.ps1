@@ -197,7 +197,7 @@ function InstallWinGet {
 
     if ($PsInstallScope -eq "CurrentUser") {
         
-        $msVcLibsPackage = Get-AppxPackage -Name "Microsoft.VCLibs.140.00.UWPDesktop" | Where-Object { $_.Version -ge "14.0.30704.0" }
+        $msVcLibsPackage = Get-AppxPackage -Name "Microsoft.VCLibs.140.00.UWPDesktop" 
         if (!($msVcLibsPackage)) {
             # install Microsoft.VCLibs
             try {
