@@ -1,5 +1,8 @@
 @description('Workload Name')
-param workloadName string 
+param workloadName string
+
+@description('Param for Resource Group Name for Connectivity Resources')
+param rgConnectivityName string
 
 @description('Connectivity Info')
 param contosoConnectivityInfo array
@@ -20,21 +23,6 @@ param contosoDevCenterDevBoxDefinitionsInfo array
 param workloadRoleDefinitionsids array
 
 
-module rgConnectivity '../src/bicep/resourceOrganization/resourceGroupResource.bicep' = {
-  name: 'connectivityResourceGroup'
-  scope: subscription()
-  params: {
-    name: '${workloadName}-DevExp-Connectivity-RG'
-  }
-}
-
-module rgDevEx '../src/bicep/resourceOrganization/resourceGroupResource.bicep' = {
-  name: 'devExResourceGroup'
-  scope: subscription()
-  params: {
-    name: '${workloadName}-DevExp-RG'
-  }
-}
 @description('Deploy Identity Resources')
 module identityResources '../src/bicep/identity/identityModule.bicep' = {
   name: 'identity'
@@ -51,7 +39,7 @@ module connectivityResources '../src/bicep/connectivity/connectivityWorkload.bic
   scope: resourceGroup()
   params: {
     workloadName: workloadName
-    connectivityResourceGroupName: rgConnectivity.name
+    connectivityResourceGroupName: rgConnectivityName
     contosoConnectivityInfo: contosoConnectivityInfo
     addressPrefixes: addressPrefixes
   }

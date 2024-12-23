@@ -108,6 +108,7 @@ jobs:
             --template-file ./src/bicep/identity/identityModule.bicep \
             --parameters ./src/bicep/identity/params.bicepparam \
             --parameters workloadName=${{ inputs.workloadName }} \
+                         rgConnectivityName=${{ env.connectivityResourceGroupName }} \
             --mode Incremental
 
       - name: Deploy Dev Box DevCenter Resources for ${{ inputs.workloadName }} to Azure
@@ -119,7 +120,7 @@ jobs:
             --template-file ./deploy/deploy.bicep \
             --parameters ./deploy/params.bicepparam \
             --parameters workloadName=${{ inputs.workloadName }} \
-                connectivityResourceGroupName=${{ env.connectivityResourceGroupName }} \
+                rgConnectivityName=${{ env.connectivityResourceGroupName }} \
             --mode Incremental    
 
   publish-bicep-artifacts:
