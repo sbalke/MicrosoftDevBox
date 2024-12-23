@@ -23,7 +23,7 @@ module managedIdentity 'managedIdentityResource.bicep' = {
   name: 'managedIdentity'
   scope: resourceGroup()
   params: {
-    workloadName: workloadName
+    name: '${workloadName}-identity'
   }
 }
 

@@ -5,9 +5,9 @@ $ErrorActionPreference = "Stop"
 $WarningPreference = "Stop"
 
 # Azure Resource Group Names Constants
-$solutionName = "ContosoDevExp"
-$devBoxResourceGroupName = "$solutionName-rg"
-$networkResourceGroupName = "$solutionName-Network-rg"
+$solutionName = "Contoso"
+$devBoxResourceGroupName = "$solutionName-DevExp-RG"
+$networkResourceGroupName = "$solutionName-DevExp-Connectivity-RG"
 
 
 # Identity Parameters Constants

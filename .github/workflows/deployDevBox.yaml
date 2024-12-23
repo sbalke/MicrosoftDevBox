@@ -87,18 +87,6 @@ jobs:
             --mode Incremental
 
       # Deploy the Landing Zone Resources using the deployment script
-      - name: Checking all changes for ${{ inputs.workloadName }} in the DevEX Landing Zone environment before deploying
-        shell: bash
-        id: check-changes-dev-box
-        run: |
-          az deployment group what-if \
-            --resource-group ${{ env.devBoxResourceGroupName }} \
-            --template-file ./src/bicep/DevEx/devExWorkload.bicep \
-            --parameters ./src/bicep/DevEx/params.bicepparam \
-            --parameters workloadName=${{ inputs.workloadName }} \
-            --mode Incremental
-
-      # Deploy the Landing Zone Resources using the deployment script
       - name: Checking all changes for ${{ inputs.workloadName }} in the Identity resources before deploying
         shell: bash
         id: check-changes-identity
@@ -107,6 +95,18 @@ jobs:
             --resource-group ${{ env.devBoxResourceGroupName }} \
             --template-file ./src/bicep/identity/identityModule.bicep \
             --parameters ./src/bicep/identity/params.bicepparam \
+            --parameters workloadName=${{ inputs.workloadName }} \
+            --mode Incremental
+
+        # Deploy the Landing Zone Resources using the deployment script
+      - name: Checking all changes for ${{ inputs.workloadName }} in the DevEXp Landing Zone environment before deploying
+        shell: bash
+        id: check-changes-dev-box
+        run: |
+          az deployment group what-if \
+            --resource-group ${{ env.devBoxResourceGroupName }} \
+            --template-file ./src/bicep/DevEx/devExWorkload.bicep \
+            --parameters ./src/bicep/DevEx/params.bicepparam \
             --parameters workloadName=${{ inputs.workloadName }} \
             --mode Incremental
 
@@ -119,7 +119,7 @@ jobs:
             --template-file ./deploy/deploy.bicep \
             --parameters ./deploy/params.bicepparam \
             --parameters workloadName=${{ inputs.workloadName }} \
-                connectivityResourceGroupName=${{ env.connectivityResourceGroupName }} \
+                rgConnectivityName=${{ env.connectivityResourceGroupName }} \
             --mode Incremental    
 
   publish-bicep-artifacts:

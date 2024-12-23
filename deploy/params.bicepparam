@@ -3,6 +3,9 @@ using 'deploy.bicep'
 @description('Workload Name')
 param workloadName  = 'Contoso'
 
+@description('Param for Resource Group Name for Connectivity Resources')
+param rgConnectivityName = '${workloadName}-DevExp-Connectivity-RG'
+
 @description('Connectivity Info')
 param contosoConnectivityInfo = [
   {

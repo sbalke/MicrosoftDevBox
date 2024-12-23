@@ -1,8 +1,8 @@
 @description('Workload Name')
-param workloadName string 
+param name string 
 
 resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-07-31-preview' = {
-  name: workloadName
+  name: name
   location: resourceGroup().location
 }
 
