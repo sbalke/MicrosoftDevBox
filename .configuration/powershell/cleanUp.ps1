@@ -91,7 +91,7 @@ function Delete-CustomRole {
 # Function to delete role assignments
 function Delete-RoleAssignments {
     # Deleting role assignments and role definitions
-    $roles = @('Owner', 'Managed Identity Operator', $customRoleName,  'ContosoDx-identity-customRole', 'ContosoIpeDx-identity-customRole')
+    $roles = @('Owner', 'Managed Identity Operator', $customRoleName,  'ContosoDx-identity-customRole', 'ContosoIpeDx-identity-customRole', 'Deployment Environments Reader', 'Deployment Environments User')
     foreach ($roleName in $roles) {
         Write-Output "Getting the role ID for '$roleName'..."
         $roleId = az role definition list --name $roleName --query [].name --output tsv
