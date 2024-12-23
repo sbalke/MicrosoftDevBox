@@ -50,8 +50,9 @@ resource devCenterProject 'Microsoft.DevCenter/projects@2024-10-01-preview' = {
   tags: tags
 }
 @description('Role Assignment Resource')
-module roleAssignments '../../../identity/roleAssignmentModule.bicep' = {
-  name: 'roleAssignments'
+module roleAssignments '../../../identity/roleAssignmentResource.bicep' = {
+  name: 'ProjectsRoleAssignments'
+  scope: subscription()
   params: {
     principalId: devCenterProject.identity.principalId
     roleDefinitions: roleDefinitions

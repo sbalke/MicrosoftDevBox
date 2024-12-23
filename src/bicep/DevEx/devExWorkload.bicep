@@ -45,14 +45,14 @@ module devCenter 'DevCenter/devCenterResource.bicep' = {
 }
 
 @description('Role Assignment Resource')
-module roleAssignments  '../identity/roleAssignmentModule.bicep' = {
-  name: 'roleAssignments'
+module roleAssignments  '../identity/roleAssignmentResource.bicep' = {
+  scope: subscription()
+  name: 'devCenterRoleAssignments'
   params: {
     principalId: devCenter.outputs.devCenterPrincipalId
     roleDefinitions: workloadRoleDefinitions
   }
 }
-
 @description('Network Connection Attachment Resource')
 module networkConnectionAttachment 'DevCenter/NetworkConnection/networkConnectionAttachmentResource.bicep' = {
   name: 'networkAttachments'
