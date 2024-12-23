@@ -108,7 +108,7 @@ var contosoProjectsInfo = [
 
 @description('Deploy DevEx Resources')
 module devExResources '../src/bicep/DevEx/devExWorkload.bicep' = {
-  name: 'devBox'
+  name: 'workload'
   scope: resourceGroup()
   params: {
     workloadName: workloadName
