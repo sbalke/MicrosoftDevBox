@@ -15,7 +15,7 @@ module customRole 'customRoleResource.bicep' = {
 @description('Custom Role Name')
 output customRoleName string = customRole.outputs.customRoleName
 
-var customRoleArray = [customRole.outputs.customRoleName]
+var customRoleArray = [customRole.outputs.customRoleId]
 
 var roleDefinitions = union(workloadRoleDefinitions, customRoleArray) 
 
