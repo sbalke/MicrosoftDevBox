@@ -45,9 +45,8 @@ module devCenter 'DevCenter/devCenterResource.bicep' = {
 }
 
 @description('Role Assignment Resource')
-module roleAssignment '../identity/roleAssignmentResource.bicep' = {
-  name: 'roleAssignment'
-  scope: subscription()
+module roleAssignments  '../identity/roleAssignmentModule.bicep' = {
+  name: 'roleAssignments'
   params: {
     principalId: devCenter.outputs.devCenterPrincipalId
     roleDefinitions: workloadroleDefinitions
@@ -76,7 +75,7 @@ module environmentTypes 'DevCenter/EnvironmentConfiguration/environmentTypesReso
     }
     dependsOn: [
       networkConnectionAttachment
-      roleAssignment
+      roleAssignments
     ]
   }
 ]
@@ -98,7 +97,7 @@ module contosoDevCenterCatalog 'DevCenter/EnvironmentConfiguration/devCentercata
   }
   dependsOn: [
     networkConnectionAttachment
-    roleAssignment
+    roleAssignments
   ]
 }
 
@@ -112,7 +111,7 @@ module devCenterDevBoxDefinitions 'DevCenter/EnvironmentConfiguration/devBoxDefi
   }
   dependsOn: [
     networkConnectionAttachment
-    roleAssignment
+    roleAssignments
   ]
 }
 
@@ -133,7 +132,7 @@ module contosoDevCenterProjects 'DevCenter/Management/projectResource.bicep' = [
     }
     dependsOn: [
       networkConnectionAttachment
-      roleAssignment
+      roleAssignments
     ]
   }
 ]

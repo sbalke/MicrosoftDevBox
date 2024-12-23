@@ -28,9 +28,8 @@ module managedIdentity 'managedIdentityResource.bicep' = {
 }
 
 @description('Managed Identity Role Assignment')
-module roleAssignment 'roleAssignmentResource.bicep' = {
-  scope: subscription()
-  name: 'managedIdentityRoleAssignment'
+module roleAssignments 'roleAssignmentModule.bicep' = {
+  name: 'roleAssignments'
   params: {
     principalId: managedIdentity.outputs.principalId
     roleDefinitions: roleDefinitions

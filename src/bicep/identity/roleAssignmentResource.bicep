@@ -2,19 +2,21 @@
 param principalId string
 
 @description('Role Definition Ids')
-param roleDefinitions array
+param roleDefinitionName string
 
 targetScope = 'subscription'
 
+resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2022-05-01-preview' existing = {
+  name: roleDefinitionName
+}
+
 @description('Role Assignment')
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [
-  for roleDefinition in roleDefinitions: {
-    name: guid(subscription().id, principalId, roleDefinition)
-    scope: subscription()
-    properties: {
-      principalId: principalId
-      roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleDefinition)
-      principalType: 'ServicePrincipal'
-    }
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(subscription().id, principalId, roleDefinition.id)
+  scope: subscription()
+  properties: {
+    principalId: principalId
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', roleDefinition.id)
+    principalType: 'ServicePrincipal'
   }
-]
+}
