@@ -29,7 +29,7 @@ module managedIdentity 'managedIdentityResource.bicep' = {
 
 @description('Managed Identity Role Assignment')
 module roleAssignments 'roleAssignmentModule.bicep' = {
-  name: 'roleAssignments'
+  name: 'managedIdentity-RoleAssignments'
   params: {
     principalId: managedIdentity.outputs.principalId
     roleDefinitions: roleDefinitions
