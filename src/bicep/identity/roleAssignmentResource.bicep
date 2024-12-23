@@ -13,7 +13,7 @@ resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [
     scope: subscription()
     properties: {
       principalId: principalId
-      roleDefinitionId: roleDefinition
+      roleDefinitionId: resourceId('Microsoft.Authorization/roleDefinitions', roleDefinition)
       principalType: 'ServicePrincipal'
     }
   }
