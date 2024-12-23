@@ -5,30 +5,30 @@ tasks:
   - name: winget
     description: Install PowerShell
     parameters:
-      package: 'Microsoft.PowerShell'
+      package: Microsoft.PowerShell
       runAsUser: true
   - name: winget
     description: Install workload baseline prerequisites
     parameters:
-      downloadUrl: 'https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/workloads/baseline.dsc.yaml'
+      downloadUrl: 'https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/baseline.dsc.yaml'
       configurationFile: 'C:\WinGetConfig\baseline.dsc.yaml'
       runAsUser: true
-  - name: winget
-    description: Install Dotnet SDK and Runtime
-    parameters:
-      downloadUrl: 'https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/workloads/frontend-Engineer/dotnet.dsc.yaml'
-      configurationFile: 'C:\WinGetConfig\dotnet.dsc.yaml'
-      runAsUser: true
-  - name: winget
-    description: Install Azure CLI, Azure Developer CLI and Components
-    parameters:
-      downloadUrl: 'https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/workloads/azure/azure.dsc.yaml'
-      configurationFile: 'C:\WinGetConfig\azure.dsc.yaml'
-      runAsUser: true
-  - name: winget
-    description: Install Visual Studio Code and Extensions
-    parameters:
-      downloadUrl: 'https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/workloads/ides/vscode.dsc.yaml'
-      configurationFile: 'C:\WinGetConfig\vscode.dsc.yaml'
-      runAsUser: true
+  # - name: winget
+  #   description: Install Dotnet SDK and Runtime
+  #   parameters:
+  #     downloadUrl: 'https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/workloads/frontend-Engineer/dotnet.dsc.yaml'
+  #     configurationFile: 'C:\WinGetConfig\dotnet.dsc.yaml'
+  #     runAsUser: true
+  # - name: winget
+  #   description: Install Azure CLI, Azure Developer CLI and Components
+  #   parameters:
+  #     downloadUrl: 'https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/workloads/azure/azure.dsc.yaml'
+  #     configurationFile: 'C:\WinGetConfig\azure.dsc.yaml'
+  #     runAsUser: true
+  # - name: winget
+  #   description: Install Visual Studio Code and Extensions
+  #   parameters:
+  #     downloadUrl: 'https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/workloads/ides/vscode.dsc.yaml'
+  #     configurationFile: 'C:\WinGetConfig\vscode.dsc.yaml'
+  #     runAsUser: true
   

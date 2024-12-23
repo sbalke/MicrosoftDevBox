@@ -5,7 +5,7 @@ tasks:
   - name: winget
     description: Install PowerShell
     parameters:
-      package: 'Microsoft.PowerShell'
+      package: Microsoft.PowerShell
       runAsUser: true
   - name: winget
     description: Install workload baseline prerequisites
