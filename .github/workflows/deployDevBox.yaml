@@ -8,13 +8,21 @@ permissions:
 # Trigger the workflow manually
 on:
   workflow_dispatch:
+    inputs:
+      workloadName:
+        description: 'Name of the workload'
+        required: true
+        default: 'Contoso'
+        type: string
+      location:
+        description: 'Location of the Azure resources'
+        required: true
+        default: 'westus3'
+        type: string
 
 env:
-  location: "westus3"
-  workloadName: "Contoso"
-  devBoxResourceGroupName: "Contoso-DevExp-RG"
-  connectivityResourceGroupName: "Contoso-DevExp-Connectivity-RG"
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE20: true
+  devBoxResourceGroupName: "${{ inputs.workloadName }}-DevExp-RG"
+  connectivityResourceGroupName: "${{ inputs.workloadName }}-DevExp-Connectivity-RG"
 
 jobs:
 
@@ -62,11 +70,11 @@ jobs:
         run: chmod +x ./.configuration/bash/deployResourcesOrganization.sh
 
       # Deploy the Landing Zone Resources using the deployment script
-      - name: Deploy Landing Zone Resources for ${{ env.workloadName }}
-        run: ./.configuration/bash/deployResourcesOrganization.sh ${{ env.devBoxResourceGroupName }} ${{ env.connectivityResourceGroupName }} ${{ env.location }}
+      - name: Deploy Landing Zone Resources for ${{ inputs.workloadName }}
+        run: ./.configuration/bash/deployResourcesOrganization.sh ${{ env.devBoxResourceGroupName }} ${{ env.connectivityResourceGroupName }} ${{ inputs.location}}
 
       # Deploy the Landing Zone Resources using the deployment script
-      - name: Checking all changes for ${{ env.workloadName }} in the Connectivity Landing Zone environment before deploying
+      - name: Checking all changes for ${{ inputs.workloadName }} in the Connectivity Landing Zone environment before deploying
         shell: bash
         id: check-changes-connectivity
         run: |
@@ -74,12 +82,12 @@ jobs:
             --resource-group ${{ env.connectivityResourceGroupName }} \
             --template-file ./src/bicep/connectivity/connectivityWorkload.bicep \
             --parameters ./src/bicep/connectivity/params.bicepparam \
-            --parameters workloadName=${{ env.workloadName }} \
+            --parameters workloadName=${{ inputs.workloadName }} \
                 connectivityResourceGroupName=${{ env.connectivityResourceGroupName }} \
             --mode Incremental
 
       # Deploy the Landing Zone Resources using the deployment script
-      - name: Checking all changes for ${{ env.workloadName }} in the DevEX Landing Zone environment before deploying
+      - name: Checking all changes for ${{ inputs.workloadName }} in the DevEX Landing Zone environment before deploying
         shell: bash
         id: check-changes-dev-box
         run: |
@@ -87,11 +95,11 @@ jobs:
             --resource-group ${{ env.devBoxResourceGroupName }} \
             --template-file ./src/bicep/DevEx/devExWorkload.bicep \
             --parameters ./src/bicep/DevEx/params.bicepparam \
-            --parameters workloadName=${{ env.workloadName }} \
+            --parameters workloadName=${{ inputs.workloadName }} \
             --mode Incremental
 
       # Deploy the Landing Zone Resources using the deployment script
-      - name: Checking all changes for ${{ env.workloadName }} in the Identity resources before deploying
+      - name: Checking all changes for ${{ inputs.workloadName }} in the Identity resources before deploying
         shell: bash
         id: check-changes-identity
         run: |
@@ -99,10 +107,10 @@ jobs:
             --resource-group ${{ env.devBoxResourceGroupName }} \
             --template-file ./src/bicep/identity/identityModule.bicep \
             --parameters ./src/bicep/identity/params.bicepparam \
-            --parameters workloadName=${{ env.workloadName }} \
+            --parameters workloadName=${{ inputs.workloadName }} \
             --mode Incremental
 
-      - name: Deploy Dev Box DevCenter Resources for ${{ env.workloadName }} to Azure
+      - name: Deploy Dev Box DevCenter Resources for ${{ inputs.workloadName }} to Azure
         shell: bash
         id: deploy-dev-center
         run: |
@@ -110,7 +118,7 @@ jobs:
             --resource-group ${{ env.devBoxResourceGroupName }} \
             --template-file ./deploy/deploy.bicep \
             --parameters ./deploy/params.bicepparam \
-            --parameters workloadName=${{ env.workloadName }} \
+            --parameters workloadName=${{ inputs.workloadName }} \
                 connectivityResourceGroupName=${{ env.connectivityResourceGroupName }} \
             --mode Incremental    
 
