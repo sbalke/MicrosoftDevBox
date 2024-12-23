@@ -16,7 +16,7 @@ param contosoProjectsInfo array
 @description('Tags')
 param tags object = {
   workload: '${workloadName}-DevExp'
-  landingZone: 'DevEx'
+  landingZone: 'DevExp'
   resourceType: 'DevCenter'
   ProductTeam: 'Platform Engineering'
   Environment: 'Production'

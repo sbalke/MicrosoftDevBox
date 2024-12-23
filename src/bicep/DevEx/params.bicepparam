@@ -35,7 +35,7 @@ param environmentTypesInfo = [
     name: 'DEV'
     tags: {
       workload: '${workloadName}-DevExp'
-      landingZone: 'DevEx'
+      landingZone: 'DevExp'
       resourceType: 'DevCenter'
       ProductTeam: 'Platform Engineering'
       Environment: 'Dev'
@@ -47,7 +47,7 @@ param environmentTypesInfo = [
     name: 'PROD'
     tags: {
       workload: '${workloadName}-DevExp'
-      landingZone: 'DevEx'
+      landingZone: 'DevExp'
       resourceType: 'DevCenter'
       ProductTeam: 'Platform Engineering'
       Environment: 'Production'
@@ -59,7 +59,7 @@ param environmentTypesInfo = [
     name: 'STAGING'
     tags: {
       workload: '${workloadName}-DevExp'
-      landingZone: 'DevEx'
+      landingZone: 'DevExp'
       resourceType: 'DevCenter'
       ProductTeam: 'Platform Engineering'
       Environment: 'Staging'
@@ -78,7 +78,7 @@ param contosoDevCenterDevBoxDefinitionsInfo = [
     hibernateSupport: 'Disabled'
     tags: {
       workload: '${workloadName}-DevExp'
-      landingZone: 'DevEx'
+      landingZone: 'DevExp'
       resourceType: 'DevCenter'
       ProductTeam: 'Platform Engineering'
       Environment: 'Production'
@@ -94,7 +94,7 @@ param contosoDevCenterDevBoxDefinitionsInfo = [
     hibernateSupport: 'Enabled'
     tags: {
       workload: '${workloadName}-DevExp'
-      landingZone: 'DevEx'
+      landingZone: 'DevExp'
       resourceType: 'DevCenter'
       ProductTeam: 'Platform Engineering'
       Environment: 'Production'
@@ -136,7 +136,7 @@ param contosoProjectsInfo = [
     ]
     tags: {
       workload: '${workloadName}-DevExp'
-      landingZone: 'DevEx'
+      landingZone: 'DevExp'
       resourceType: 'DevCenter'
       ProductTeam: 'Platform Engineering'
       Environment: 'Production'
@@ -164,7 +164,7 @@ param contosoProjectsInfo = [
     ]
     tags: {
       workload: '${workloadName}-DevExp'
-      landingZone: 'DevEx'
+      landingZone: 'DevExp'
       resourceType: 'DevCenter'
       ProductTeam: 'Platform Engineering'
       Environment: 'Production'
