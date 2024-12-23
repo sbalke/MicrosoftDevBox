@@ -5,7 +5,7 @@ param workloadName string
 param devCenterName string
 
 @description('Role Definition Ids')
-param roleDefinitionIds array
+param roleDefinitions array
 
 @description('DevCenter Resource')
 resource devCenterResource 'Microsoft.DevCenter/devcenters@2024-10-01-preview' existing = {
@@ -31,7 +31,7 @@ module roleAssignmentGallery '../../identity/roleAssignmentResource.bicep' = {
   scope: subscription()
   params: {
     principalId: computeGallery.outputs.galleryIdentityPrincipalId
-    roleDefinitionIds: roleDefinitionIds
+    roleDefinitions: roleDefinitions
   }
 }
 

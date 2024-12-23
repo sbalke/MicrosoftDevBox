@@ -19,8 +19,8 @@ param environmentTypesInfo array
 @description('Contoso Dev Center Dev Box Definitions')
 param contosoDevCenterDevBoxDefinitionsInfo array
 
-@description('Workload Role Definitions Ids')
-param workloadRoleDefinitionsids array
+@description('Workload Role Definitions')
+param workloadRoleDefinitions array
 
 
 @description('Deploy Identity Resources')
@@ -29,7 +29,7 @@ module identityResources '../src/bicep/identity/identityModule.bicep' = {
   scope: resourceGroup()
   params: {
     workloadName: workloadName
-    workloadRoleDefinitionsids: workloadRoleDefinitionsids
+    workloadRoleDefinitions: workloadRoleDefinitions
   }
 }
 
@@ -113,7 +113,7 @@ module devExResources '../src/bicep/DevEx/devExWorkload.bicep' = {
   params: {
     workloadName: workloadName
     networkConnectionsCreated: connectivityResources.outputs.networkConnectionsCreated
-    workloadRoleDefinitionIds: identityResources.outputs.roleDefinitionIds
+    workloadroleDefinitions: identityResources.outputs.roleDefinitions
     contosoDevCenterCatalogInfo: contosoDevCenterCatalogInfo
     environmentTypesInfo: environmentTypesInfo
     contosoDevCenterDevBoxDefinitionsInfo: contosoDevCenterDevBoxDefinitionsInfo
