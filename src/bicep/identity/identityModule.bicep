@@ -1,8 +1,8 @@
 @description('Workload Name')
-param workloadName string
+param workloadName string 
 
 @description('Workload Role Definitions')
-param workloadRoleDefinitions array 
+param workloadRoleDefinitions array
 
 module customRole 'customRoleResource.bicep' = {
   name: 'customRole'
@@ -17,7 +17,7 @@ output customRoleName string = customRole.outputs.customRoleName
 
 var customRoleArray = [customRole.outputs.customRoleId]
 
-var roleDefinitions = union(workloadRoleDefinitions, customRoleArray) 
+var roleDefinitions = union(workloadRoleDefinitions, customRoleArray)
 
 module managedIdentity 'managedIdentityResource.bicep' = {
   name: 'managedIdentity'
@@ -28,8 +28,9 @@ module managedIdentity 'managedIdentityResource.bicep' = {
 }
 
 @description('Managed Identity Role Assignment')
-module roleAssignments 'roleAssignmentModule.bicep' = {
-  name: 'managedIdentityRoleAssignments'
+module roleAssignments 'roleAssignmentResource.bicep' = {
+  name: 'roleAssignments'
+  scope: subscription()
   params: {
     principalId: managedIdentity.outputs.principalId
     roleDefinitions: roleDefinitions
