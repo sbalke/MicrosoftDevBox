@@ -1,8 +1,8 @@
 @description('Dev Center Name')
-param principalId string
+param principalId string 
 
 @description('Role Definition Ids')
-param roleDefinitions array
+param roleDefinitions array 
 
 targetScope = 'subscription'
 

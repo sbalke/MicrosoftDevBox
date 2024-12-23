@@ -1,5 +1,5 @@
 @description('Workload Name')
-param workloadName string
+param workloadName string 
 
 @description('Custom Role Resource')
 resource customRole 'Microsoft.Authorization/roleDefinitions@2022-05-01-preview' = {
@@ -37,7 +37,7 @@ resource customRole 'Microsoft.Authorization/roleDefinitions@2022-05-01-preview'
 }
 
 @description('Custom Role Resource ID')
-output customRoleId string = customRole.id
+output customRoleId string = customRole.name
 
 @description('Custom Role Resource Name')
 output customRoleName string = customRole.properties.roleName
