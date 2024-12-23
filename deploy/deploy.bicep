@@ -65,7 +65,7 @@ var contosoProjectsInfo = [
       }
     ]
     tags: {
-      workload: workloadName
+      workload: '${workloadName}-DevExp'
       landingZone: 'DevEx'
       resourceType: 'DevCenter'
       ProductTeam: 'Platform Engineering'
@@ -93,7 +93,7 @@ var contosoProjectsInfo = [
       }
     ]
     tags: {
-      workload: workloadName
+      workload: '${workloadName}-DevExp'
       landingZone: 'DevEx'
       resourceType: 'DevCenter'
       ProductTeam: 'Platform Engineering'

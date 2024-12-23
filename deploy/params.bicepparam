@@ -42,7 +42,7 @@ param environmentTypesInfo = [
   {
     name: 'DEV'
     tags: {
-      workload: workloadName
+      workload: '${workloadName}-DevExp'
       landingZone: 'DevEx'
       resourceType: 'DevCenter'
       ProductTeam: 'Platform Engineering'
@@ -54,7 +54,7 @@ param environmentTypesInfo = [
   {
     name: 'PROD'
     tags: {
-      workload: workloadName
+      workload: '${workloadName}-DevExp'
       landingZone: 'DevEx'
       resourceType: 'DevCenter'
       ProductTeam: 'Platform Engineering'
@@ -66,7 +66,7 @@ param environmentTypesInfo = [
   {
     name: 'STAGING'
     tags: {
-      workload: workloadName
+      workload: '${workloadName}-DevExp'
       landingZone: 'DevEx'
       resourceType: 'DevCenter'
       ProductTeam: 'Platform Engineering'
@@ -85,7 +85,7 @@ param contosoDevCenterDevBoxDefinitionsInfo = [
     sku: 'general_i_32c128gb512ssd_v2'
     hibernateSupport: 'Disabled'
     tags: {
-      workload: workloadName
+      workload: '${workloadName}-DevExp'
       landingZone: 'DevEx'
       resourceType: 'DevCenter'
       ProductTeam: 'Platform Engineering'
@@ -101,7 +101,7 @@ param contosoDevCenterDevBoxDefinitionsInfo = [
     sku: 'general_i_16c64gb256ssd_v2'
     hibernateSupport: 'Enabled'
     tags: {
-      workload: workloadName
+      workload: '${workloadName}-DevExp'
       landingZone: 'DevEx'
       resourceType: 'DevCenter'
       ProductTeam: 'Platform Engineering'

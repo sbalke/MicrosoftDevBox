@@ -12,7 +12,7 @@ param addressPrefixes array
 
 @description('Tags')
 param tags object = {
-  workload: workloadName
+  workload: '${workloadName}-DevExp'
   landingZone: 'connectivity'
   resourceType: 'virtualNetwork'
   ProductTeam: 'Platform Engineering'

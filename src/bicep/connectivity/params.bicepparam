@@ -4,7 +4,7 @@ using 'connectivityWorkload.bicep'
 param workloadName  = 'Contoso'
 
 @description('Connectivity Resource Group Name')
-param connectivityResourceGroupName = '${workloadName}-Network-rg'
+param connectivityResourceGroupName = '${workloadName}-DevExp-Connectivity-RG'
 
 @description('Connectivity Info')
 param contosoConnectivityInfo = [
@@ -29,7 +29,7 @@ param addressPrefixes = [
 
 @description('Tags')
 param tags = {
-  workload: workloadName
+  workload: '${workloadName}-DevExp'
   landingZone: 'connectivity'
   resourceType: 'virtualNetwork'
   ProductTeam: 'Platform Engineering'
