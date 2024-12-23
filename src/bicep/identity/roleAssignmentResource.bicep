@@ -2,17 +2,17 @@
 param principalId string
 
 @description('Role Definition Ids')
-param roleDefinitionIds array
+param roleDefinitions array
 
 targetScope = 'subscription'
 
 @description('Role Assignment')
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for roleDefinitionId in roleDefinitionIds:  {
-  name: guid(subscription().id, principalId, roleDefinitionId)
+resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = [for roleDefinition in roleDefinitions:  {
+  name: guid(subscription().id, principalId, roleDefinition)
   scope: subscription()
   properties: {
     principalId: principalId
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions',roleDefinitionId)
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions',roleDefinition)
     principalType: 'ServicePrincipal'
   }
 }

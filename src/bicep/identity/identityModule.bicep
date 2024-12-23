@@ -1,8 +1,8 @@
 @description('Workload Name')
 param workloadName string
 
-@description('Workload Role Definitions Ids')
-param workloadRoleDefinitionsids array 
+@description('Workload Role Definitions')
+param workloadRoleDefinitions array 
 
 module customRole 'customRoleResource.bicep' = {
   name: 'customRole'
@@ -17,7 +17,7 @@ output customRoleName string = customRole.outputs.customRoleName
 
 var customRoleArray = [customRole.outputs.customRoleName]
 
-var roleDefinitionIds = union(workloadRoleDefinitionsids, customRoleArray) 
+var roleDefinitions = union(workloadRoleDefinitions, customRoleArray) 
 
 module managedIdentity 'managedIdentityResource.bicep' = {
   name: 'managedIdentity'
@@ -33,9 +33,9 @@ module roleAssignment 'roleAssignmentResource.bicep' = {
   name: 'managedIdentityRoleAssignment'
   params: {
     principalId: managedIdentity.outputs.principalId
-    roleDefinitionIds: roleDefinitionIds
+    roleDefinitions: roleDefinitions
   }
 }
 
 @description('Role Definition Ids')
-output roleDefinitionIds array = roleDefinitionIds
+output roleDefinitions array = roleDefinitions

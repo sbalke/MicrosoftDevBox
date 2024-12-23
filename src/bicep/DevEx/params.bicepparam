@@ -105,8 +105,8 @@ param contosoDevCenterDevBoxDefinitionsInfo = [
   }
 ]
 
-@description('Workload Role Definitions Ids')
-param workloadRoleDefinitionIds = [
+@description('Workload Role Definitions')
+param workloadroleDefinitions = [
   '8e3af657-a8ff-443c-a75c-2fe8c4bcb635'
   '331c37c6-af14-46d9-b9f4-e1909e1b95a0'
   '45d50f46-0b78-4001-a660-4198cbe8cd05'

@@ -17,7 +17,7 @@ param devBoxDefinitions array
 param networkConnectionName string
 
 @description('Role Definition Ids')
-param roleDefinitionIds array
+param roleDefinitions array
 
 // @description('Project Environment Types Info')
 // param projectEnvironmentTypesInfo array
@@ -55,7 +55,7 @@ module roleAssignment '../../../identity/roleAssignmentResource.bicep' = {
   scope: subscription()
   params: {
     principalId: devCenterProject.identity.principalId
-    roleDefinitionIds: roleDefinitionIds
+    roleDefinitions: roleDefinitions
   }
 }
 
