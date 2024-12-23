@@ -8,15 +8,19 @@ targetScope = 'subscription'
 
 resource roleDefinition 'Microsoft.Authorization/roleDefinitions@2022-05-01-preview' existing = {
   name: roleDefinitionName
+  scope: subscription()
 }
 
-@description('Role Assignment')
-resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
-  name: guid(subscription().id, principalId, roleDefinition.id)
-  scope: subscription()
-  properties: {
-    principalId: principalId
-    roleDefinitionId: roleDefinition.id
-    principalType: 'ServicePrincipal'
-  }
-}
+output roleDefinitionId string = roleDefinition.id
+output principalId string = principalId
+
+// @description('Role Assignment')
+// resource roleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+//   name: guid(subscription().id, principalId, roleDefinition.id)
+//   scope: subscription()
+//   properties: {
+//     principalId: principalId
+//     roleDefinitionId: roleDefinition.id
+//     principalType: 'ServicePrincipal'
+//   }
+// }
