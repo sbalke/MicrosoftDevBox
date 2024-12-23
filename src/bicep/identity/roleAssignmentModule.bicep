@@ -11,7 +11,7 @@ module roleAssignment 'roleAssignmentResource.bicep' = [
     scope: subscription()
     params: {
       principalId: principalId
-      roleDefinitionName: roleDefinition
+      roleDefinitionId: roleDefinition
     }
   }
 ]
