@@ -1,8 +1,8 @@
 @description('Workload Name')
 param workloadName string
 
-@description('Identity Name')
-param workloadroleDefinitions array 
+@description('Workload Role Definitions')
+param workloadRoleDefinitions array 
 
 @description('Network Connections')
 param networkConnectionsCreated array 
@@ -49,7 +49,7 @@ module roleAssignments  '../identity/roleAssignmentModule.bicep' = {
   name: 'roleAssignments'
   params: {
     principalId: devCenter.outputs.devCenterPrincipalId
-    roleDefinitions: workloadroleDefinitions
+    roleDefinitions: workloadRoleDefinitions
   }
 }
 
@@ -127,8 +127,7 @@ module contosoDevCenterProjects 'DevCenter/Management/projectResource.bicep' = [
       projectCatalogsInfo: project.catalogs
       devBoxDefinitions: devCenterDevBoxDefinitions.outputs.devBoxDefinitions
       networkConnectionName: project.networkConnectionName
-      roleDefinitions: workloadroleDefinitions
-      //projectEnvironmentTypesInfo: environmentTypesInfo
+      roleDefinitions: workloadRoleDefinitions
     }
     dependsOn: [
       networkConnectionAttachment

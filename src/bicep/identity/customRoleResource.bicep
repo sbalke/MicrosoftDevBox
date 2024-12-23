@@ -40,4 +40,4 @@ resource customRole 'Microsoft.Authorization/roleDefinitions@2022-05-01-preview'
 output customRoleId string = customRole.id
 
 @description('Custom Role Resource Name')
-output customRoleName string = customRole.name
+output customRoleName string = customRole.properties.roleName
