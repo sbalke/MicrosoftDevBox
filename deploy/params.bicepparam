@@ -34,7 +34,7 @@ param contosoDevCenterCatalogInfo = {
   type: 'GitHub'
   uri: 'https://github.com/Evilazaro/DevExp-DevBox.git'
   branch: 'main'
-  path: '/.configuration/devcenter/customizations/tasks'
+  path: '/.configuration/devcenter/tasks'
 }
 
 @description('Environment Types Info')
