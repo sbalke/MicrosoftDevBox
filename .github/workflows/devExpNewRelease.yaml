@@ -12,8 +12,7 @@ on:
         description: 'Comments for the release'
         required: true
         default: 'No comments provided'
-  pull_request:
-    types: [closed]
+  push:
     branches:
       - main
     
@@ -56,10 +55,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: Build
     steps:
-      # Checkout the repository to get the source code
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
       # Download the previously uploaded Bicep artifacts
       - name: Download Bicep Artifacts
         uses: actions/download-artifact@v4
@@ -76,10 +71,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: publish-bicep-artifacts
     steps:
-      # Checkout the repository to get the source code
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
       # Download the previously uploaded Bicep artifacts
       - name: Download Bicep Artifacts
         uses: actions/download-artifact@v4
