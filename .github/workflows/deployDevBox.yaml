@@ -97,24 +97,4 @@ jobs:
             --parameters ./deploy/params.bicepparam \
             --parameters workloadName=${{ inputs.workloadName }} \
                 rgConnectivityName=${{ env.connectivityResourceGroupName }} \
-            --mode Incremental    
-
-  publish-bicep-artifacts:
-    runs-on: ubuntu-latest
-    needs: Build
-    steps:
-      # Checkout the repository to get the source code
-      - name: Checkout repository
-        uses: actions/checkout@v2
-
-      # Download the previously uploaded Bicep artifacts
-      - name: Download Bicep Artifacts
-        uses: actions/download-artifact@v4
-        with:
-          name: bicepArtifacts_v1.0.0-deploy-${{ github.run_number }}.zip
-
-      # Upload the Bicep artifacts to storage (add your upload logic here)
-      - name: Upload Bicep Artifacts to Storage
-        run: |
-          # Add your upload logic here
-          echo "Uploading Bicep artifacts"
+            --mode Incremental
