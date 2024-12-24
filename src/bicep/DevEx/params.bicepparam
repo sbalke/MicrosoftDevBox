@@ -26,7 +26,7 @@ param contosoDevCenterCatalogInfo = {
   type: 'GitHub'
   uri: 'https://github.com/Evilazaro/DevExp-DevBox.git'
   branch: 'main'
-  path: '/.configuration/devcenter/customizations/tasks'
+  path: '/.configuration/devcenter/tasks'
 }
 
 @description('Environment Types Info')
@@ -124,16 +124,10 @@ param contosoProjectsInfo = [
     networkConnectionName: networkConnectionsCreated[0].name
     catalogs: [
       {
-        catalogName: 'imageDefinitions'
-        uri: 'https://github.com/Evilazaro/eShop.git'
-        branch: 'main'
-        path: '/.configurations/environments'
-      }
-      {
         catalogName: 'environments'
         uri: 'https://github.com/Evilazaro/eShop.git'
         branch: 'main'
-        path: '/.configurations/environments'
+        path: '/.configurations/devcenter/environments'
       }
     ]
     tags: {
@@ -152,16 +146,10 @@ param contosoProjectsInfo = [
     networkConnectionName: networkConnectionsCreated[1].name
     catalogs: [
       {
-        catalogName: 'imageDefinitions'
-        uri: 'https://github.com/Evilazaro/contosotraders.git'
-        branch: 'main'
-        path: '/.configurations/environments'
-      }
-      {
         catalogName: 'environments'
         uri: 'https://github.com/Evilazaro/contosotraders.git'
         branch: 'main'
-        path: '/.configurations/environments'
+        path: '/.configurations/devcenter/environments'
       }
     ]
     tags: {
