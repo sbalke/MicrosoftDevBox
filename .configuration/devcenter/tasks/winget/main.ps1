@@ -204,7 +204,7 @@ function InstallWinGet {
             if ($env:PROCESSOR_ARCHITECTURE -eq "ARM64") {
                 $architecture = "arm64"
             }
-            $MsVcLibs = "$env:TEMP\$([System.IO.Path]::GetRandomFileName())-Microsoft.VCLibs.$architecture.14.00.Desktop.appx"
+            $MsVcLibs = "$env:TEMP\$([System.IO.Path]::GetRandomFileName())-Microsoft.VCLibs.14.00.Desktop"
             Write-Host $MsVcLibs
             Invoke-WebRequest -Uri "https://aka.ms/Microsoft.VCLibs.$architecture.14.00.Desktop.appx" -OutFile $MsVcLibs
             Add-AppxPackage -Path $MsVcLibs -ForceApplicationShutdown
