@@ -21,15 +21,6 @@ param tags object = {
   offering: 'DevBox-as-a-Service'
 }
 
-@description('DDoS Protection Plan')
-module ddosProtectionPlan 'DDoSPlan/DDoSPlanResource.bicep' = {
-  name: 'ddosProtectionPlan'
-  scope: resourceGroup(connectivityResourceGroupName)
-  params: {
-    name: workloadName
-  }
-}
-
 @description('Virtual Network Resource')
 module virtualNetwork 'virtualNetwork/virtualNetworkResource.bicep' = {
   name: 'virtualNetwork'
@@ -39,8 +30,6 @@ module virtualNetwork 'virtualNetwork/virtualNetworkResource.bicep' = {
     location: resourceGroup().location
     tags: tags
     addressPrefixes: addressPrefixes
-    enableDdosProtection: true
-    ddosProtectionPlanId: ddosProtectionPlan.outputs.ddosProtectionPlanId
     subnets: contosoConnectivityInfo
   }
 }
