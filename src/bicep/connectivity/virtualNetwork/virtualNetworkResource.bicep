@@ -10,12 +10,6 @@ param addressPrefixes array
 @description('Subnets')
 param subnets array
 
-@description('Enable DDoS Protection Plan')
-param enableDdosProtection bool
-
-@description('DDoS Protection Plan Resource ID')
-param ddosProtectionPlanId string
-
 @description('Tags')
 param tags object
 
@@ -28,12 +22,6 @@ resource virtualNetwork 'Microsoft.Network/virtualNetworks@2024-03-01' = {
     addressSpace: {
       addressPrefixes: addressPrefixes
     }
-    enableDdosProtection: enableDdosProtection ? true : false
-    ddosProtectionPlan: enableDdosProtection
-      ? {
-          id: ddosProtectionPlanId
-        }
-      : null
     subnets: [
       for (subnet, i) in subnets: {
         name: '${subnet.name}'
