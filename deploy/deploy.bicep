@@ -5,19 +5,19 @@ param workloadName string
 param rgConnectivityName string
 
 @description('Connectivity Info')
-param contosoConnectivityInfo array
+param workloadConnectivityInfo array
 
 @description('Address Prefixes')
 param addressPrefixes array
 
 @description('Contoso Dev Center Catalog')
-param contosoDevCenterCatalogInfo object
+param workloadCatalogInfo object
 
 @description('Environment Types Info')
 param environmentTypesInfo array
 
 @description('Contoso Dev Center Dev Box Definitions')
-param contosoDevCenterDevBoxDefinitionsInfo array
+param workloadDevBoxDefinitionsInfo array
 
 @description('Workload Role Definitions')
 param workloadRoleDefinitions array
@@ -40,13 +40,13 @@ module connectivityResources '../src/bicep/connectivity/connectivityWorkload.bic
   params: {
     workloadName: workloadName
     connectivityResourceGroupName: rgConnectivityName
-    contosoConnectivityInfo: contosoConnectivityInfo
+    workloadConnectivityInfo: workloadConnectivityInfo
     addressPrefixes: addressPrefixes
   }
 }
 
 @description('Projects')
-var contosoProjectsInfo = [
+var workloadProjectsInfo = [
   {
     name: 'eShop'
     networkConnectionName: connectivityResources.outputs.networkConnectionsCreated[0].name
@@ -107,16 +107,22 @@ var contosoProjectsInfo = [
 
 
 @description('Deploy DevEx Resources')
-module devExResources '../src/bicep/DevEx/devExWorkload.bicep' = {
+module devExResources '../src/bicep/DevEx/DevCenter/devCenterResource.bicep' = {
   name: 'workload'
-  scope: resourceGroup()
   params: {
-    workloadName: workloadName
-    networkConnectionsCreated: connectivityResources.outputs.networkConnectionsCreated
-    workloadRoleDefinitions: identityResources.outputs.roleDefinitions
-    contosoDevCenterCatalogInfo: contosoDevCenterCatalogInfo
+    name: workloadName
+    location: resourceGroup().location
+    catalogItemSyncEnableStatus: 'Enabled'
+    workloadCatalogInfo: workloadCatalogInfo
     environmentTypesInfo: environmentTypesInfo
-    contosoDevCenterDevBoxDefinitionsInfo: contosoDevCenterDevBoxDefinitionsInfo
-    contosoProjectsInfo: contosoProjectsInfo
+    installAzureMonitorAgentEnableStatus: 'Enabled'
+    microsoftHostedNetworkEnableStatus: 'Enabled'
+    networkConnectionsCreated: connectivityResources.outputs.networkConnectionsCreated
+    workloadDevBoxDefinitionsInfo: workloadDevBoxDefinitionsInfo
+    workloadProjectsInfo: workloadProjectsInfo
+    workloadRoleDefinitions: workloadRoleDefinitions
   }
+  dependsOn: [
+    identityResources
+  ]
 }

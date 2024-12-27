@@ -5,7 +5,7 @@ param workloadName string
 param connectivityResourceGroupName string
 
 @description('Connectivity Info')
-param contosoConnectivityInfo array 
+param workloadConnectivityInfo array 
 
 @description('Address Prefixes')
 param addressPrefixes array 
@@ -30,13 +30,13 @@ module virtualNetwork 'virtualNetwork/virtualNetworkResource.bicep' = {
     location: resourceGroup().location
     tags: tags
     addressPrefixes: addressPrefixes
-    subnets: contosoConnectivityInfo
+    subnets: workloadConnectivityInfo
   }
 }
 
 @description('Network Connection Resource')
 module networkConnection 'networkConnection/networkConnectionResource.bicep' = [
-  for (netConnection, i) in contosoConnectivityInfo: {
+  for (netConnection, i) in workloadConnectivityInfo: {
     name: 'netCon-${netConnection.name}'
     scope: resourceGroup(connectivityResourceGroupName)
     params: {
@@ -51,7 +51,7 @@ module networkConnection 'networkConnection/networkConnectionResource.bicep' = [
 
 @description('Network Connections')
 output networkConnectionsCreated array = [
-  for (netConnection, i) in contosoConnectivityInfo: {
+  for (netConnection, i) in workloadConnectivityInfo: {
     name: networkConnection[i].outputs.networkConnectionName
     id: networkConnection[i].outputs.networkConnectionId
   }
