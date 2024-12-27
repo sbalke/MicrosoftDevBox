@@ -97,6 +97,7 @@ module networkConnectionAttachment 'NetworkConnection/networkConnectionAttachmen
 @description('Environment Type Resource')
 module environmentTypes 'EnvironmentConfiguration/environmentTypesResource.bicep' = {
   name: 'environmentTypes'
+  scope: resourceGroup()
   params: {
     devCenterName: devCenter.name
     environmentTypesInfo: environmentTypesInfo
@@ -139,6 +140,7 @@ module devBoxDefinitions 'EnvironmentConfiguration/devBoxDefinitionResource.bice
 @description('Contoso Dev Center Projects')
 module projects 'Management/projectModule.bicep' = {
   name: 'projects'
+  scope: resourceGroup()
   params: {
     devBoxDefinitions: devBoxDefinitions.outputs.devBoxDefinitions
     devCenterName: devCenter.name
