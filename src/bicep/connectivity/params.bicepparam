@@ -15,7 +15,7 @@ param contosoConnectivityInfo = [
     }
   }
   {
-    name: 'Contoso-Traders'
+    name: '${workloadName}-Traders'
     networkConnection: {
       domainJoinType: 'AzureADJoin'
     }

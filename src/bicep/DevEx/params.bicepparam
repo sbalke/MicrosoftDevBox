@@ -12,7 +12,7 @@ param networkConnectionsCreated = [
     }
   }
   {
-    name: 'Contoso-Traders'
+    name: '${workloadName}-Traders'
     networkConnection: {
       domainJoinType: 'AzureADJoin'
     }
@@ -142,7 +142,7 @@ param contosoProjectsInfo = [
     }
   }
   {
-    name: 'Contoso-Traders'
+    name: '${workloadName}-Traders'
     networkConnectionName: networkConnectionsCreated[1].name
     catalogs: [
       {
@@ -160,7 +160,7 @@ param contosoProjectsInfo = [
       Environment: 'Production'
       Department: 'IT'
       offering: 'DevBox-as-a-Service'
-      project: 'Contoso-Traders'
+      project: '${workloadName}-Traders'
     }
   }
 ]

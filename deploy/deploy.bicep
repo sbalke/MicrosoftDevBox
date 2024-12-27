@@ -76,7 +76,7 @@ var contosoProjectsInfo = [
     }
   }
   {
-    name: 'Contoso-Traders'
+    name: '${workloadName}-Traders'
     networkConnectionName: connectivityResources.outputs.networkConnectionsCreated[1].name
     catalogs: [
       {
@@ -100,7 +100,7 @@ var contosoProjectsInfo = [
       Environment: 'Production'
       Department: 'IT'
       offering: 'DevBox-as-a-Service'
-      project: 'Contoso-Traders'
+      project: '${workloadName}-Traders'
     }
   }
 ]
