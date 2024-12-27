@@ -1,12 +1,9 @@
 using 'deploy.bicep'
 
-@description('Workload Name')
-param workloadName  = 'Contoso'
+param workloadName = 'Contoso'
 
-@description('Param for Resource Group Name for Connectivity Resources')
 param rgConnectivityName = '${workloadName}-DevExp-Connectivity-RG'
 
-@description('Connectivity Info')
 param workloadConnectivityInfo = [
   {
     name: 'eShop'
@@ -22,14 +19,12 @@ param workloadConnectivityInfo = [
   }
 ]
 
-@description('Address Prefixes')
 param addressPrefixes = [
   '10.0.0.0/16'
 ]
 
-@description('Contoso Dev Center Catalog')
 param workloadCatalogInfo = {
-  name: 'Contoso-Custom-Tasks'
+  name: 'Custom-Tasks'
   syncType: 'Scheduled'
   type: 'GitHub'
   uri: 'https://github.com/Evilazaro/DevExp-DevBox.git'
@@ -37,7 +32,6 @@ param workloadCatalogInfo = {
   path: '/.configuration/devcenter/tasks'
 }
 
-@description('Environment Types Info')
 param environmentTypesInfo = [
   {
     name: 'DEV'
@@ -77,10 +71,9 @@ param environmentTypesInfo = [
   }
 ]
 
-@description('Contoso Dev Center Dev Box Definitions')
 param workloadDevBoxDefinitionsInfo = [
   {
-    name: 'Contoso-BackEnd-Engineer'
+    name: 'BackEnd-Engineer'
     imageName: 'microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win11-m365-gen2'
     sku: 'general_i_32c128gb512ssd_v2'
     hibernateSupport: 'Disabled'
@@ -96,7 +89,7 @@ param workloadDevBoxDefinitionsInfo = [
     }
   }
   {
-    name: 'Contoso-FrontEnd-Engineer'
+    name: 'FrontEnd-Engineer'
     imageName: 'microsoftwindowsdesktop_windows-ent-cpc_win11-21h2-ent-cpc-m365'
     sku: 'general_i_16c64gb256ssd_v2'
     hibernateSupport: 'Enabled'
@@ -113,7 +106,6 @@ param workloadDevBoxDefinitionsInfo = [
   }
 ]
 
-@description('Workload Role Definitions')
 param workloadRoleDefinitions = [
   '8e3af657-a8ff-443c-a75c-2fe8c4bcb635'
   'b24988ac-6180-42a0-ab88-20f7382dd24c'
