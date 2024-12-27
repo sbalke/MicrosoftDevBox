@@ -73,6 +73,7 @@ module devBoxPools 'devBoxPoolsResource.bicep' = [
     params: {
       projectName: project.name
       devBoxDefinitions: devBoxDefinitions
+      networkConnectionName: project.networkConnectionName
     }
   }
 ]

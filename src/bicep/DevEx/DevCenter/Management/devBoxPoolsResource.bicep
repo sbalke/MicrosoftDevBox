@@ -4,6 +4,9 @@ param projectName string
 @description('DevBox Definitions')
 param devBoxDefinitions array
 
+@description('Network Connection Name')
+param networkConnectionName string
+
 @description('Project')
 resource project 'Microsoft.DevCenter/projects@2024-10-01-preview' existing = {
   name: projectName
@@ -20,7 +23,7 @@ resource devBoxPools 'Microsoft.DevCenter/projects/pools@2024-10-01-preview' = [
       devBoxDefinitionName: devBoxDefinition.name
       localAdministrator: 'Enabled'
       licenseType: 'Windows_Client'
-      networkConnectionName: 'Default'
+      networkConnectionName: networkConnectionName
       singleSignOnStatus: 'Enabled'
       virtualNetworkType: 'Unmanaged'
     }
