@@ -7,7 +7,7 @@ param workloadName  = 'Contoso'
 param connectivityResourceGroupName = '${workloadName}-DevExp-Connectivity-RG'
 
 @description('Connectivity Info')
-param contosoConnectivityInfo = [
+param workloadConnectivityInfo = [
   {
     name: 'eShop'
     networkConnection: {

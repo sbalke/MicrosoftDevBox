@@ -7,7 +7,7 @@ param workloadName  = 'Contoso'
 param rgConnectivityName = '${workloadName}-DevExp-Connectivity-RG'
 
 @description('Connectivity Info')
-param contosoConnectivityInfo = [
+param workloadConnectivityInfo = [
   {
     name: 'eShop'
     networkConnection: {
@@ -28,7 +28,7 @@ param addressPrefixes = [
 ]
 
 @description('Contoso Dev Center Catalog')
-param contosoDevCenterCatalogInfo = {
+param workloadCatalogInfo = {
   name: 'Contoso-Custom-Tasks'
   syncType: 'Scheduled'
   type: 'GitHub'
@@ -78,7 +78,7 @@ param environmentTypesInfo = [
 ]
 
 @description('Contoso Dev Center Dev Box Definitions')
-param contosoDevCenterDevBoxDefinitionsInfo = [
+param workloadDevBoxDefinitionsInfo = [
   {
     name: 'Contoso-BackEnd-Engineer'
     imageName: 'microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win11-m365-gen2'

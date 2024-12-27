@@ -20,7 +20,7 @@ param networkConnectionsCreated = [
 ]
 
 @description('Contoso Dev Center Catalog')
-param contosoDevCenterCatalogInfo = {
+param workloadCatalogInfo = {
   name: 'Contoso-Custom-Tasks'
   syncType: 'Scheduled'
   type: 'GitHub'
@@ -70,7 +70,7 @@ param environmentTypesInfo = [
 ]
 
 @description('Contoso Dev Center Dev Box Definitions')
-param contosoDevCenterDevBoxDefinitionsInfo = [
+param workloadDevBoxDefinitionsInfo = [
   {
     name: 'Contoso-BackEnd-Engineer'
     imageName: 'microsoftvisualstudio_visualstudioplustools_vs-2022-ent-general-win11-m365-gen2'
@@ -118,7 +118,7 @@ param workloadRoleDefinitions = [
 
 
 @description('Contoso Projects Info')
-param contosoProjectsInfo = [
+param workloadProjectsInfo = [
   {
     name: 'eShop'
     networkConnectionName: networkConnectionsCreated[0].name
