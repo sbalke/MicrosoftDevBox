@@ -64,3 +64,15 @@ module projectCatalogs 'projectCatalogResource.bicep' = [
     }
   }
 ]
+
+@description('Dev Box Pools')
+module devBoxPools 'devBoxPoolsResource.bicep' = [
+  for (project, i) in workloadProjectsInfo: {
+    name: '${projects[i].name}-devBoxPools'
+    scope: resourceGroup()
+    params: {
+      projectName: project.name
+      devBoxDefinitions: devBoxDefinitions
+    }
+  }
+]
