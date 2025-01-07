@@ -45,7 +45,7 @@ resource projects 'Microsoft.DevCenter/projects@2024-10-01-preview' = [
 module roleAssignments '../../../identity/roleAssignmentResource.bicep' = [
   for (project, i) in workloadProjectsInfo: {
     scope: subscription()
-    name: '${projects[i].name}-roleAssignments'
+    name: '${projects[i].name}-${resourceGroup().location}-roleAssignments'
     params: {
       principalId: projects[i].identity.principalId
       roleDefinitions: roleDefinitions
