@@ -14,7 +14,7 @@ module managedIdentity 'managedIdentityResource.bicep' = {
 
 @description('Managed Identity Role Assignment')
 module roleAssignments 'roleAssignmentResource.bicep' = {
-  name: 'roleAssignments'
+  name: '${workloadName}-${resourceGroup().location}-roleAssignments'
   scope: subscription()
   params: {
     principalId: managedIdentity.outputs.principalId
