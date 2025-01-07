@@ -2,7 +2,7 @@
 param name string 
 
 resource identity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-07-31-preview' = {
-  name: name
+  name: '${name}-${uniqueString(resourceGroup().id,name)}-identity'
   location: resourceGroup().location
 }
 
