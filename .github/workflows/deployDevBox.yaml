@@ -17,7 +17,7 @@ on:
       location:
         description: 'Location of the Azure resources'
         required: true
-        default: 'westus3'
+        default: 'eastus2'
         type: string
 
 env:
