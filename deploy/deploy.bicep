@@ -22,7 +22,6 @@ param workloadDevBoxDefinitionsInfo array
 @description('Workload Role Definitions')
 param workloadRoleDefinitions array
 
-
 @description('Deploy Identity Resources')
 module identityResources '../src/bicep/identity/identityModule.bicep' = {
   name: 'identity'
@@ -75,36 +74,7 @@ var workloadProjectsInfo = [
       project: 'eShop'
     }
   }
-  {
-    name: '${workloadName}-Traders'
-    networkConnectionName: connectivityResources.outputs.networkConnectionsCreated[1].name
-    catalogs: [
-      {
-        catalogName: 'imageDefinitions'
-        uri: 'https://github.com/Evilazaro/contosotraders.git'
-        branch: 'main'
-        path: '/devEx/customizations'
-      }
-      {
-        catalogName: 'environments'
-        uri: 'https://github.com/Evilazaro/contosotraders.git'
-        branch: 'main'
-        path: '/devEx/environments'
-      }
-    ]
-    tags: {
-      workload: '${workloadName}-DevExp'
-      landingZone: 'DevExp'
-      resourceType: 'DevCenter'
-      ProductTeam: 'Platform Engineering'
-      Environment: 'Production'
-      Department: 'IT'
-      offering: 'DevBox-as-a-Service'
-      project: '${workloadName}-Traders'
-    }
-  }
 ]
-
 
 @description('Deploy DevEx Resources')
 module devExResources '../src/bicep/DevEx/DevCenter/devCenterResource.bicep' = {
