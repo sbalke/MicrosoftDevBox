@@ -11,12 +11,6 @@ param workloadConnectivityInfo = [
       domainJoinType: 'AzureADJoin'
     }
   }
-  {
-    name: '${workloadName}-Traders'
-    networkConnection: {
-      domainJoinType: 'AzureADJoin'
-    }
-  }
 ]
 
 param addressPrefixes = [
