@@ -7,12 +7,27 @@ $WarningPreference = "Stop"
 $appDisplayName = "ContosoDevEx GitHub Actions Enterprise App"
 $ghSecretName = "AZURE_CREDENTIALS"
 
+function Delete-Deployments {
+    param (
+        [string]$resourceGroupName
+    )
+
+    $deployments = az deployment sub list --query "[].name" -o tsv
+    foreach ($deployment in $deployments) {
+        Write-Output "Deleting deployment: $deployment"
+        az deployment sub delete --name $deployment
+        Write-Output "Deployment $deployment deleted."
+    }
+}
+
 # Function to clean up the setup by deleting users, credentials, and GitHub secrets
 function Clean-SetUp {
     param (
         [string]$appDisplayName,
         [string]$ghSecretName
     )
+
+    Delete-Deployments
 
     # Check if required parameters are provided
     if ([string]::IsNullOrEmpty($appDisplayName) -or [string]::IsNullOrEmpty($ghSecretName)) {
