@@ -91,7 +91,7 @@ jobs:
         shell: bash
         id: deploy-dev-center
         run: |
-          az deployment group create --name deploy-${{ inputs.workloadName }} \
+          az deployment group create  \
             --resource-group ${{ env.devBoxResourceGroupName }} \
             --template-file ./deploy/deploy.bicep \
             --parameters ./deploy/params.bicepparam \
