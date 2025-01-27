@@ -52,15 +52,15 @@ var workloadProjectsInfo = [
     catalogs: [
       {
         catalogName: 'imageDefinitions'
-        uri: 'https://github.com/Evilazaro/eShop.git'
+        uri: 'https://github.com/Evilazaro/eShop-k8s.git'
         branch: 'main'
-        path: '/devEx/customizations'
+        path: '/.configurations/imageDefinitions'
       }
       {
         catalogName: 'environments'
-        uri: 'https://github.com/Evilazaro/eShop.git'
+        uri: 'https://github.com/Evilazaro/eShop-k8s.git'
         branch: 'main'
-        path: '/devEx/environments'
+        path: '/.configurations/environments'
       }
     ]
     tags: {
