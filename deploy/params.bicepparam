@@ -11,6 +11,12 @@ param workloadConnectivityInfo = [
       domainJoinType: 'AzureADJoin'
     }
   }
+  {
+    name: 'IdentityProvider'
+    networkConnection: {
+      domainJoinType: 'AzureADJoin'
+    }
+  }
 ]
 
 param addressPrefixes = [
