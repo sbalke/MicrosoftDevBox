@@ -12,7 +12,7 @@ param workloadConnectivityInfo = [
     }
   }
   {
-    name: 'IdentityProvider'
+    name: 'identityProvider'
     networkConnection: {
       domainJoinType: 'AzureADJoin'
     }
