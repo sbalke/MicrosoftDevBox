@@ -80,15 +80,15 @@ var workloadProjectsInfo = [
     catalogs: [
       {
         catalogName: 'imageDefinitions'
-        uri: 'https://github.com/Evilazaro/eShop-k8s.git'
+        uri: 'https://github.com/Evilazaro/IdentityProvider.git'
         branch: 'main'
-        path: '/.configurations/imageDefinitions'
+        path: '/.configuration/devcenter/imageDefinitions'
       }
       {
         catalogName: 'environments'
-        uri: 'https://github.com/Evilazaro/eShop-k8s.git'
+        uri: 'https://github.com/Evilazaro/IdentityProvider.git'
         branch: 'main'
-        path: '/.configurations/environments'
+        path: '/.configuration/devcenter/environments/dev'
       }
     ]
     tags: {
