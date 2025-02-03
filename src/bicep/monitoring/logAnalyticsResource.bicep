@@ -9,6 +9,9 @@ resource logAnalytics 'Microsoft.OperationalInsights/workspaces@2023-09-01' = {
   name: '${name}-${uniqueString(name, resourceGroup().id)}'
   location: resourceGroup().location
   tags: tags
+  identity: {
+    type: 'SystemAssigned'
+  }
   properties: {
     sku: {
       name: 'PerGB2018'

@@ -148,27 +148,3 @@ module projects 'Management/projectModule.bicep' = {
     workloadProjectsInfo: workloadProjectsInfo
   }
 }
-
-@description('DevCenter Resource ID')
-output devCenterId string = devCenter.id
-
-@description('DevCenter Resource Name')
-output devCenterName string = devCenter.name
-
-@description('DevCenter Resource Location')
-output devCenterLocation string = devCenter.location
-
-@description('DevCenter Resource Catalog Item Sync Enable Status')
-output devCenterCatalogItemSyncEnableStatus string = devCenter.properties.projectCatalogSettings.catalogItemSyncEnableStatus
-
-@description('DevCenter Resource Microsoft Hosted Network Enable Status')
-output devCenterMicrosoftHostedNetworkEnableStatus string = devCenter.properties.networkSettings.microsoftHostedNetworkEnableStatus
-
-@description('DevCenter Resource Install Azure Monitor Agent Enable Status')
-output devCenterInstallAzureMonitorAgentEnableStatus string = devCenter.properties.devBoxProvisioningSettings.installAzureMonitorAgentEnableStatus
-
-@description('DevCenter Resource Tags')
-output devCenterTags object = devCenter.tags
-
-@description('DevCenter Resource Principal ID')
-output devCenterPrincipalId string = devCenter.identity.principalId
