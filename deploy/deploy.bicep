@@ -22,12 +22,23 @@ param workloadDevBoxDefinitionsInfo array
 @description('Workload Role Definitions')
 param workloadRoleDefinitions array
 
+@description('Deploy Identity Resources')
+module identityResources '../src/bicep/identity/identityModule.bicep' = {
+  name: 'identity'
+  scope: resourceGroup()
+  params: {
+    workloadName: workloadName
+    workloadRoleDefinitions: workloadRoleDefinitions
+  }
+}
+
 @description('Deploy Monitoring Resources')
 module monitoringResources '../src/bicep/monitoring/logAnalyticsResource.bicep' = {
   name: 'monitoring'
   scope: resourceGroup()
   params: {
     name: workloadName
+    workloadRoleDefinitions: workloadRoleDefinitions
     tags: {
       workload: '${workloadName}-DevExp'
       landingZone: 'DevExp'
@@ -38,16 +49,9 @@ module monitoringResources '../src/bicep/monitoring/logAnalyticsResource.bicep' 
       offering: 'DevBox-as-a-Service'
     }
   }
-}
-
-@description('Deploy Identity Resources')
-module identityResources '../src/bicep/identity/identityModule.bicep' = {
-  name: 'identity'
-  scope: resourceGroup()
-  params: {
-    workloadName: workloadName
-    workloadRoleDefinitions: workloadRoleDefinitions
-  }
+  dependsOn: [
+    identityResources
+  ]
 }
 
 @description('Deploy Connectivity Resources')
@@ -143,6 +147,5 @@ module devExResources '../src/bicep/DevEx/DevCenter/devCenterResource.bicep' = {
   }
   dependsOn: [
     monitoringResources
-    identityResources
   ]
 }
