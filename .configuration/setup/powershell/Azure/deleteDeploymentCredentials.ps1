@@ -5,41 +5,45 @@ param (
 )
 
 # Function to delete deployment credentials
-function Delete-DeploymentCredentials {
+function Remove-DeploymentCredentials {
     param (
+        [Parameter(Mandatory=$true)]
         [string]$appDisplayName
     )
 
-    # Get the application ID using the display name
-    $appId = az ad app list --display-name $appDisplayName --query "[0].appId" -o tsv
+    try {
+        # Get the application ID using the display name
+        $appId = az ad app list --display-name $appDisplayName --query "[0].appId" -o tsv
 
-    if (-not $appId) {
-        Write-Output "Error: Application with display name '$appDisplayName' not found."
+        if (-not $appId) {
+            throw "Application with display name '$appDisplayName' not found."
+        }
+
+        # Delete the service principal
+        Write-Output "Deleting service principal with appId: $appId"
+        $spDeleteResult = az ad sp delete --id $appId
+        if ($null -ne $spDeleteResult) {
+            throw "Failed to delete service principal."
+        }
+
+        # Delete the application registration
+        Write-Output "Deleting application registration with appId: $appId"
+        $appDeleteResult = az ad app delete --id $appId
+        if ($null -ne $appDeleteResult) {
+            throw "Failed to delete application registration."
+        }
+
+        Write-Output "Service principal and App Registration deleted successfully."
+    } catch {
+        Write-Error "Error: $_"
         return 1
     }
-
-    # Delete the service principal
-    Write-Output "Deleting service principal with appId: $appId"
-    $spDeleteResult = az ad sp delete --id $appId
-    if ($spDeleteResult -ne $null) {
-        Write-Output "Error: Failed to delete service principal."
-        return 1
-    }
-
-    # Delete the application registration
-    Write-Output "Deleting application registration with appId: $appId"
-    $appDeleteResult = az ad app delete --id $appId
-    if ($appDeleteResult -ne $null) {
-        Write-Output "Error: Failed to delete application registration."
-        return 1
-    }
-
-    Write-Output "Service principal and App Registration deleted successfully."
 }
 
 # Function to validate input parameters
-function Validate-Input {
+function Test-Input {
     param (
+        [Parameter(Mandatory=$true)]
         [string]$appDisplayName
     )
 
@@ -51,6 +55,12 @@ function Validate-Input {
 }
 
 # Main script execution
-Validate-Input -appDisplayName $appDisplayName
-Delete-DeploymentCredentials -appDisplayName $appDisplayName
-
+try {
+    Test-Input -appDisplayName $appDisplayName
+    if ($LASTEXITCODE -eq 0) {
+        Remove-DeploymentCredentials -appDisplayName $appDisplayName
+    }
+} catch {
+    Write-Error "Script execution failed: $_"
+    exit 1
+}

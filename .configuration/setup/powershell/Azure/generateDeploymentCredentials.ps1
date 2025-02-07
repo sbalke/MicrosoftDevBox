@@ -6,95 +6,128 @@ param (
 )
 
 # Function to validate input parameters
-function Validate-Input {
+function Test-Input {
     param (
         [string]$appName,
         [string]$displayName
     )
 
     if ([string]::IsNullOrEmpty($appName) -or [string]::IsNullOrEmpty($displayName)) {
-        Write-Output "Error: Missing required parameters."
+        Write-Error "Error: Missing required parameters."
         Write-Output "Usage: Validate-Input -appName <appName> -displayName <displayName>"
-        return 1
+        throw "Validation failed"
     }
 }
 
 # Function to generate deployment credentials
-function Generate-DeploymentCredentials {
+function New-DeploymentCredentials {
     param (
         [string]$appName,
         [string]$displayName
     )
 
-    # Define the role and get the subscription ID
-    $role = "Owner"
-    $subscriptionId = az account show --query id --output tsv
-    if ($LASTEXITCODE -ne 0) {
-        Write-Output "Error: Failed to retrieve subscription ID."
+    try {
+        # Define the role and get the subscription ID
+        $role = "Contributor"
+        $subscriptionId = az account show --query id --output tsv
+        if ($LASTEXITCODE -ne 0) {
+            throw "Error: Failed to retrieve subscription ID."
+        }
+
+        # Create the service principal and capture the appId
+        $ghSecretBody = az ad sp create-for-rbac --name $appName --display-name $displayName --role $role --scopes "/subscriptions/$subscriptionId" --json-auth --output json
+        if ($LASTEXITCODE -ne 0) {
+            throw "Error: Failed to create service principal."
+        }
+
+        $appId = az ad sp list --display-name $displayName --query "[0].appId" -o tsv
+        if ($LASTEXITCODE -ne 0) {
+            throw "Error: Failed to retrieve service principal appId."
+        }
+
+        Write-Output "Assigning User Access Administrator and Managed Identity Contributor roles..."
+        # Assign User Access Administrator role
+        az role assignment create --assignee $appId --role "User Access Administrator" --scope "/subscriptions/$subscriptionId"
+        if ($LASTEXITCODE -ne 0) {
+            throw "Error: Failed to assign User Access Administrator role."
+        }
+
+        # Assign Managed Identity Contributor role
+        az role assignment create --assignee $appId --role "Managed Identity Contributor" --scope "/subscriptions/$subscriptionId"
+        if ($LASTEXITCODE -ne 0) {
+            throw "Error: Failed to assign Managed Identity Contributor role."
+        }
+
+        Write-Output "Role assignments completed."
+        Write-Output "Service principal credentials:"
+        Write-Output $ghSecretBody
+
+        # Create users and assign roles
+        New-UsersAndAssignRole -appId $appId
+
+        # Create GitHub secret for Azure credentials
+        New-GitHubSecretAzureCredentials -ghSecretBody $ghSecretBody
+    } catch {
+        Write-Error "Error: $_"
         return 1
     }
-
-    # Create the service principal and capture the appId
-    $ghSecretBody = az ad sp create-for-rbac --name $appName --display-name $displayName --role $role --scopes "/subscriptions/$subscriptionId" --json-auth --output json
-    $appId = az ad sp list --display-name $displayName --query "[0].appId" -o tsv
-
-    if ($LASTEXITCODE -ne 0) {
-        Write-Output "Error: Failed to create service principal."
-        return 1
-    }
-
-    Write-Output "Service principal credentials:"
-    Write-Output $ghSecretBody
-
-    # Create users and assign roles
-    Create-UsersAndAssignRole -appId $appId
-
-    # Create GitHub secret for Azure credentials
-    Create-GitHubSecretAzureCredentials -ghSecretBody $ghSecretBody
 }
 
 # Function to create users and assign roles
-function Create-UsersAndAssignRole {
+function New-UsersAndAssignRole {
     param (
         [string]$appId
     )
 
-    Write-Output "Creating users and assigning roles..."
+    try {
+        Write-Output "Creating users and assigning roles..."
 
-    # Execute the script to create users and assign roles
-    .\Azure\createUsersAndAssignRole.ps1
-    if ($LASTEXITCODE -ne 0) {
-        Write-Output "Error: Failed to create users and assign roles."
+        # Execute the script to create users and assign roles
+        .\Azure\createUsersAndAssignRole.ps1
+        if ($LASTEXITCODE -ne 0) {
+            throw "Error: Failed to create users and assign roles."
+        }
+
+        Write-Output "Users created and roles assigned successfully."
+    } catch {
+        Write-Error "Error: $_"
         return 1
     }
-
-    Write-Output "Users created and roles assigned successfully."
 }
 
 # Function to create a GitHub secret for Azure credentials
-function Create-GitHubSecretAzureCredentials {
+function New-GitHubSecretAzureCredentials {
     param (
         [string]$ghSecretBody
     )
 
-    if ([string]::IsNullOrEmpty($ghSecretBody)) {
-        Write-Output "Error: Missing required parameter."
-        Write-Output "Usage: Create-GitHubSecretAzureCredentials -ghSecretBody <ghSecretBody>"
+    try {
+        if ([string]::IsNullOrEmpty($ghSecretBody)) {
+            Write-Error "Error: Missing required parameter."
+            Write-Output "Usage: Create-GitHubSecretAzureCredentials -ghSecretBody <ghSecretBody>"
+            throw "Validation failed"
+        }
+
+        Write-Output "Creating GitHub secret for Azure credentials..."
+
+        # Execute the script to create the GitHub secret
+        .\GitHub\createGitHubSecretAzureCredentials.ps1 $ghSecretBody
+        if ($LASTEXITCODE -ne 0) {
+            throw "Error: Failed to create GitHub secret for Azure credentials."
+        }
+
+        Write-Output "GitHub secret for Azure credentials created successfully."
+    } catch {
+        Write-Error "Error: $_"
         return 1
     }
-
-    Write-Output "Creating GitHub secret for Azure credentials..."
-
-    # Execute the script to create the GitHub secret
-    .\GitHub\createGitHubSecretAzureCredentials.ps1 $ghSecretBody
-    if ($LASTEXITCODE -ne 0) {
-        Write-Output "Error: Failed to create GitHub secret for Azure credentials."
-        return 1
-    }
-
-    Write-Output "GitHub secret for Azure credentials created successfully."
 }
 
 # Main script execution
-Validate-Input -appName $appName -displayName $displayName
-Generate-DeploymentCredentials -appName $appName -displayName $displayName
+try {
+    Test-Input -appName $appName -displayName $displayName
+    New-DeploymentCredentials -appName $appName -displayName $displayName
+} catch {
+    Write-Error "Script execution failed: $_"
+    exit 1
+}

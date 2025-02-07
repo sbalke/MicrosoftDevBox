@@ -7,53 +7,83 @@ $WarningPreference = "Stop"
 $appDisplayName = "ContosoDevEx GitHub Actions Enterprise App"
 $ghSecretName = "AZURE_CREDENTIALS"
 
-function Delete-Deployments {
+# Function to delete deployments
+function Remove-Deployments {
     param (
         [string]$resourceGroupName
     )
 
-    $deployments = az deployment sub list --query "[].name" -o tsv
-    foreach ($deployment in $deployments) {
-        Write-Output "Deleting deployment: $deployment"
-        az deployment sub delete --name $deployment
-        Write-Output "Deployment $deployment deleted."
+    try {
+        $deployments = az deployment sub list --query "[].name" -o tsv
+        foreach ($deployment in $deployments) {
+            Write-Output "Deleting deployment: $deployment"
+            az deployment sub delete --name $deployment
+            Write-Output "Deployment $deployment deleted."
+        }
+    } catch {
+        Write-Error "Error deleting deployments: $_"
+        return 1
     }
 }
 
 # Function to clean up the setup by deleting users, credentials, and GitHub secrets
-function Clean-SetUp {
+function Remove-SetUp {
     param (
+        [Parameter(Mandatory=$true)]
         [string]$appDisplayName,
+
+        [Parameter(Mandatory=$true)]
         [string]$ghSecretName
     )
 
-    Delete-Deployments
+    try {
+        # Check if required parameters are provided
+        if ([string]::IsNullOrEmpty($appDisplayName) -or [string]::IsNullOrEmpty($ghSecretName)) {
+            throw "Missing required parameters."
+        }
 
-    # Check if required parameters are provided
-    if ([string]::IsNullOrEmpty($appDisplayName) -or [string]::IsNullOrEmpty($ghSecretName)) {
-        Write-Output "Error: Missing required parameters."
-        Write-Output "Usage: Clean-SetUp -appDisplayName <appDisplayName> -ghSecretName <ghSecretName>"
+        Write-Output "Starting cleanup process for appDisplayName: $appDisplayName and ghSecretName: $ghSecretName"
+
+        # Delete deployments
+        Write-Output "Deleting deployments..."
+        Remove-Deployments
+        if ($LASTEXITCODE -ne 0) {
+            throw "Failed to delete deployments."
+        }
+
+        # Delete users and assigned roles
+        Write-Output "Deleting users and assigned roles..."
+        .\Azure\deleteUsersAndAssignedRoles.ps1 -appDisplayName $appDisplayName
+        if ($LASTEXITCODE -ne 0) {
+            throw "Failed to delete users and assigned roles."
+        }
+
+        # Delete deployment credentials
+        Write-Output "Deleting deployment credentials..."
+        .\Azure\deleteDeploymentCredentials.ps1 -appDisplayName $appDisplayName
+        if ($LASTEXITCODE -ne 0) {
+            throw "Failed to delete deployment credentials."
+        }
+
+        # Delete GitHub secret for Azure credentials
+        Write-Output "Deleting GitHub secret for Azure credentials..."
+        .\GitHub\deleteGitHubSecretAzureCredentials.ps1 -ghSecretName $ghSecretName
+        if ($LASTEXITCODE -ne 0) {
+            throw "Failed to delete GitHub secret for Azure credentials."
+        }
+
+        Write-Output "Cleanup process completed successfully for appDisplayName: $appDisplayName and ghSecretName: $ghSecretName"
+    } catch {
+        Write-Error "Error during cleanup process: $_"
         return 1
     }
-
-    Write-Output "Starting cleanup process for appDisplayName: $appDisplayName and ghSecretName: $ghSecretName"
-
-    # Delete users and assigned roles
-    Write-Output "Deleting users and assigned roles..."
-    .\Azure\deleteUsersAndAssignedRoles.ps1 $appDisplayName
-    
-    # Delete deployment credentials
-    Write-Output "Deleting deployment credentials..."
-    .\Azure\deleteDeploymentCredentials.ps1 $appDisplayName
-   
-    # Delete GitHub secret for Azure credentials
-    Write-Output "Deleting GitHub secret for Azure credentials..."
-    .\GitHub\deleteGitHubSecretAzureCredentials.ps1 $ghSecretName
-    
-
-    Write-Output "Cleanup process completed successfully for appDisplayName: $appDisplayName and ghSecretName: $ghSecretName"
 }
 
 # Main script execution
-Clear-Host
-Clean-SetUp -appDisplayName $appDisplayName -ghSecretName $ghSecretName
+try {
+    Clear-Host
+    Remove-SetUp -appDisplayName $appDisplayName -ghSecretName $ghSecretName
+} catch {
+    Write-Error "Script execution failed: $_"
+    exit 1
+}
