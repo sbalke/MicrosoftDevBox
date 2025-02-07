@@ -27,7 +27,7 @@ function Generate-DeploymentCredentials {
     )
 
     # Define the role and get the subscription ID
-    $role = "Owner"
+    $role = "Contributor"
     $subscriptionId = az account show --query id --output tsv
     if ($LASTEXITCODE -ne 0) {
         Write-Output "Error: Failed to retrieve subscription ID."
@@ -36,12 +36,24 @@ function Generate-DeploymentCredentials {
 
     # Create the service principal and capture the appId
     $ghSecretBody = az ad sp create-for-rbac --name $appName --display-name $displayName --role $role --scopes "/subscriptions/$subscriptionId" --json-auth --output json
+    
     $appId = az ad sp list --display-name $displayName --query "[0].appId" -o tsv
 
     if ($LASTEXITCODE -ne 0) {
         Write-Output "Error: Failed to create service principal."
         return 1
     }
+
+    Write-Output "Assigning User Access Administrator and Managed Identity Contributor roles..."
+    # Assign User Access Administrator role
+    az role assignment create --assignee $appId --role "User Access Administrator" --scope "/subscriptions/$subscriptionId"
+
+    # Assign Managed Identity Contributor role
+    az role assignment create --assignee $appId --role "Managed Identity Contributor" --scope "/subscriptions/$subscriptionId"
+
+    az ad sp list --display-name "my-pipeline-sp" --query "[].appId" -o tsv
+
+    Write-Output "Role assignments completed."
 
     Write-Output "Service principal credentials:"
     Write-Output $ghSecretBody
