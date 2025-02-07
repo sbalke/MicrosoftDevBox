@@ -4,71 +4,67 @@
 $subscriptionId = (az account show --query id -o tsv)
 
 # Function to assign a role to a user or service principal
-function Assign-Role {
+function Set-Role {
     param (
+        [Parameter(Mandatory=$true)]
         [string]$userIdentityId,
+
+        [Parameter(Mandatory=$true)]
         [string]$roleName,
+
+        [Parameter(Mandatory=$true)]
         [string]$idType
     )
 
-    # Check if required parameters are provided
-    if ([string]::IsNullOrEmpty($userIdentityId) -or [string]::IsNullOrEmpty($roleName) -or [string]::IsNullOrEmpty($idType)) {
-        Write-Output "Error: Missing required parameters."
-        Write-Output "Usage: Assign-Role -userIdentityId <userIdentityId> -roleName <roleName> -idType <idType>"
-        return 1
-    }
+    try {
+        Write-Output "Assigning '$roleName' role to identityId $userIdentityId..."
 
-    Write-Output "Assigning '$roleName' role to identityId $userIdentityId..."
+        # Attempt to assign the role
+        $result = az role assignment create --assignee-object-id $userIdentityId --assignee-principal-type $idType --role $roleName --scope /subscriptions/$subscriptionId
 
-    # Attempt to assign the role
-    $result = az role assignment create --assignee-object-id $userIdentityId --assignee-principal-type $idType --role $roleName --scope /subscriptions/$subscriptionId
-
-    if ($result) {
-        Write-Output "Role '$roleName' assigned successfully."
-    } else {
-        Write-Output "Error: Failed to assign role '$roleName' to identityId $userIdentityId."
+        if ($result) {
+            Write-Output "Role '$roleName' assigned successfully."
+        } else {
+            throw "Failed to assign role '$roleName' to identityId $userIdentityId."
+        }
+    } catch {
+        Write-Error "Error: $_"
         return 2
     }
 }
 
 # Function to create user assignments and assign roles
-function Create-UserAssignments {
-    # Get the current signed-in user's object ID
-    $currentUser = az ad signed-in-user show --query id -o tsv
+function New-UserAssignments {
+    try {
+        # Get the current signed-in user's object ID
+        $currentUser = az ad signed-in-user show --query id -o tsv
 
-    if (-not $currentUser) {
-        Write-Output "Error: Failed to retrieve current signed-in user's object ID."
+        if (-not $currentUser) {
+            throw "Failed to retrieve current signed-in user's object ID."
+        }
+
+        Write-Output "Creating user assignments and assigning roles for currentUser: $currentUser"
+
+        $roles = @(
+            "DevCenter Dev Box User",
+            "DevCenter Project Admin",
+            "Deployment Environments Reader",
+            "Deployment Environments User"
+        )
+
+        foreach ($role in $roles) {
+            Set-Role -userIdentityId $currentUser -roleName $role -idType "User"
+            if ($LASTEXITCODE -ne 0) {
+                throw "Failed to assign role '$role' to current user with object ID: $currentUser"
+            }
+        }
+
+        Write-Output "User assignments and role assignments completed successfully for currentUser: $currentUser"
+    } catch {
+        Write-Error "Error: $_"
         return 1
     }
-
-    Write-Output "Creating user assignments and assigning roles for currentUser: $currentUser"
-
-    Assign-Role -userIdentityId $currentUser -roleName "DevCenter Dev Box User" -idType "User"
-    if ($LASTEXITCODE -ne 0) {
-        Write-Output "Error: Failed to assign role 'DevCenter Dev Box User' to current user with object ID: $currentUser"
-        return 1
-    }
-
-    Assign-Role -userIdentityId $currentUser -roleName "DevCenter Project Admin" -idType "User"
-    if ($LASTEXITCODE -ne 0) {
-        Write-Output "Error: Failed to assign role 'DevCenter Project Admin' to current user with object ID: $currentUser"
-        return 1
-    }
-
-    Assign-Role -userIdentityId $currentUser -roleName "Deployment Environments Reader" -idType "User"
-    if ($LASTEXITCODE -ne 0) {
-        Write-Output "Error: Failed to assign role 'Deployment Environments Reader' to current user with object ID: $currentUser"
-        return 1
-    }
-
-    Assign-Role -userIdentityId $currentUser -roleName "Deployment Environments User" -idType "User"
-    if ($LASTEXITCODE -ne 0) {
-        Write-Output "Error: Failed to assign role 'Deployment Environments User' to current user with object ID: $currentUser"
-        return 1
-    }
-
-    Write-Output "User assignments and role assignments completed successfully for currentUser: $currentUser"
 }
 
 # Main script execution
-Create-UserAssignments
+New-UserAssignments

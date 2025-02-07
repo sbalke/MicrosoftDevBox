@@ -1,62 +1,93 @@
 # PowerShell script to delete user assignments and roles
 
-# Get the current subscription ID
-$subscriptionId = (az account show --query id -o tsv)
+param (
+    [string]$appDisplayName
+)
 
 # Function to delete user assignments and roles
-function Delete-UserAssignments {
-    # Get the current signed-in user's object ID
-    $currentUser = az ad signed-in-user show --query id -o tsv
+function Remove-UserAssignments {
+    try {
+        # Get the current signed-in user's object ID
+        $currentUser = az ad signed-in-user show --query id -o tsv
 
-    Write-Output "Deleting user assignments and roles for currentUser: $currentUser"
-        
-    # Remove roles from the service principal and current user
-    Remove-Role -userIdentityId $currentUser -roleName "DevCenter Project Admin" -idType "ServicePrincipal"
-    
-    Remove-Role -userIdentityId $currentUser -roleName "DevCenter Dev Box User" -idType "User"
+        if (-not $currentUser) {
+            throw "Failed to retrieve current signed-in user's object ID."
+        }
 
-    Write-Output "User assignments and role removals completed successfully for currentUser: $currentUser"
+        Write-Output "Removing user assignments and roles for currentUser: $currentUser"
 
+        # Define roles to be removed
+        $roles = @(
+            @{ RoleName = "DevCenter Project Admin"; IdType = "ServicePrincipal" },
+            @{ RoleName = "DevCenter Dev Box User"; IdType = "User" }
+        )
+
+        # Remove roles from the service principal and current user
+        foreach ($role in $roles) {
+            Remove-Role -userIdentityId $currentUser -roleName $role.RoleName -idType $role.IdType
+            if ($LASTEXITCODE -ne 0) {
+                throw "Failed to remove role '$($role.RoleName)' from current user with object ID: $currentUser"
+            }
+        }
+
+        Write-Output "User assignments and roles removals completed successfully for currentUser: $currentUser"
+    } catch {
+        Write-Error "Error: $_"
+        return 1
+    }
 }
 
 # Function to remove a role from a user or service principal
 function Remove-Role {
     param (
+        [Parameter(Mandatory=$true)]
         [string]$userIdentityId,
+
+        [Parameter(Mandatory=$true)]
         [string]$roleName,
+
+        [Parameter(Mandatory=$true)]
         [string]$idType
     )
 
-    # Check if required parameters are provided
-    if ([string]::IsNullOrEmpty($userIdentityId) -or [string]::IsNullOrEmpty($roleName) -or [string]::IsNullOrEmpty($idType)) {
-        Write-Output "Error: Missing required parameters."
-        Write-Output "Usage: Remove-Role -userIdentityId <userIdentityId> -roleName <roleName> -idType <idType>"
+    try {
+        Write-Output "Removing '$roleName' role from identityId $userIdentityId..."
+
+        # Attempt to remove the role
+        $result = az role assignment delete --assignee $userIdentityId --role $roleName --scope /subscriptions/$subscriptionId
+
+        if ($null -ne $result) {
+            throw "Failed to remove role '$roleName' from identityId $userIdentityId."
+        }
+
+        Write-Output "Role '$roleName' removed successfully."
+    } catch {
+        Write-Error "Error: $_"
         return 1
     }
-
-    Write-Output "Removing '$roleName' role from identityId $userIdentityId..."
-
-    # Attempt to remove the role
-    $result = az role assignment delete --assignee $userIdentityId --role $roleName --scope /subscriptions/$subscriptionId
-   
-    Write-Output "Role '$roleName' removed successfully."
 }
 
 # Function to validate input parameters
-function Validate-Input {
+function Test-Input {
     param (
+        [Parameter(Mandatory=$true)]
         [string]$appDisplayName
     )
 
     if ([string]::IsNullOrEmpty($appDisplayName)) {
         Write-Output "Error: Missing required parameter."
-        Write-Output "Usage: .\deleteDeploymentCredentials.ps1 -appDisplayName <appDisplayName>"
+        Write-Output "Usage: .\deleteUsersAndAssignedRoles.ps1 -appDisplayName <appDisplayName>"
         return 1
     }
-
-    $currentUser = az ad sp list --display-name $appDisplayName --query "[0].currentUser" -o tsv
 }
 
 # Main script execution
-Validate-Input -appDisplayName $appDisplayName
-Delete-UserAssignments
+try {
+    Test-Input -appDisplayName $appDisplayName
+    if ($LASTEXITCODE -eq 0) {
+        Remove-UserAssignments
+    }
+} catch {
+    Write-Error "Script execution failed: $_"
+    exit 1
+}
