@@ -46,18 +46,18 @@ properties:
         TestScript: return $false
       dependsOn:
         - Microsoft.PowerShell
-    - resource: PSDscResources/Script
-      id: Microsoft.AppInstaller.Updates
-      directives:
-        description: Updates all Microsoft Apps installed in the system
-      settings:
-        SetScript: |
-          $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
-          winget upgrade --all --source msstore --accept-source-agreements --accept-package-agreements --verbose --force
-        GetScript: return $false
-        TestScript: return $false
-      dependsOn:
-        - Microsoft.PowerShell
+    # - resource: PSDscResources/Script
+    #   id: Microsoft.AppInstaller.Updates
+    #   directives:
+    #     description: Updates all Microsoft Apps installed in the system
+    #   settings:
+    #     SetScript: |
+    #       $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
+    #       winget upgrade --all --source msstore --accept-source-agreements --accept-package-agreements --verbose --force
+    #     GetScript: return $false
+    #     TestScript: return $false
+    #   dependsOn:
+    #     - Microsoft.PowerShell
       ### Enable WinGet
     #   ### -------------------------------------
     # - resource: PSDscResources/Script
