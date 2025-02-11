@@ -146,5 +146,6 @@ module projects 'Management/projectModule.bicep' = {
     devCenterName: devCenter.name
     roleDefinitions: workloadRoleDefinitions
     workloadProjectsInfo: workloadProjectsInfo
+    environmentTypesInfo: environmentTypesInfo
   }
 }
