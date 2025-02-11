@@ -3,11 +3,6 @@ name: 'backend-engineer-workload'
 description: 'Back End Engineer Workload'
 tasks:
   - name: winget
-    description: Install PowerShell
-    parameters:
-      package: Microsoft.PowerShell
-      runAsUser: true
-  - name: winget
     description: Install workload baseline prerequisites
     parameters:
       downloadUrl: 'https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/baseline.dsc.yaml'
