@@ -44,8 +44,8 @@ properties:
           Install-Module -Name PSDscResources -Force -AllowClobber
         GetScript: return $false
         TestScript: return $false
-      dependsOn:
-        - Microsoft.PowerShell
+      # dependsOn:
+      #   - Microsoft.PowerShell
     # - resource: PSDscResources/Script
     #   id: Microsoft.AppInstaller.Updates
     #   directives:
