@@ -41,7 +41,6 @@ resource envType 'Microsoft.DevCenter/projects/environmentTypes@2024-10-01-previ
     }
     properties: {
       displayName: 'Environment Type Resource'
-      status: 'Active'
       deploymentTargetId: subscription().id
       creatorRoleAssignment: {
         roles: toObject(roles, role => role.id, role => role.properties)
