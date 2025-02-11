@@ -103,4 +103,3 @@ Write-Host "Done Updating WinGet"
 # Revert PSGallery installation policy to untrusted
 Set-PSRepository -Name "PSGallery" -InstallationPolicy Untrusted
 
-

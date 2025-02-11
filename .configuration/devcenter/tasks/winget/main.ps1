@@ -60,7 +60,7 @@ function SetupScheduledTasks {
 
     $Trigger = $Task.Triggers.Create(9)
     $Trigger.Enabled = $true
-    $Trigger.Repetition.Interval = "PT1M"
+    $Trigger.Repetition.Interval="PT1M"
 
     $Action = $Task.Actions.Create(0)
     $Action.Path = "PowerShell.exe"
@@ -90,13 +90,13 @@ function SetupScheduledTasks {
 
 function WithRetry {
     Param(
-        [Parameter(Position = 0, Mandatory = $true)]
+        [Parameter(Position=0, Mandatory=$true)]
         [scriptblock]$ScriptBlock,
 
-        [Parameter(Position = 1, Mandatory = $false)]
+        [Parameter(Position=1, Mandatory=$false)]
         [int]$Maximum = 5,
 
-        [Parameter(Position = 2, Mandatory = $false)]
+        [Parameter(Position=2, Mandatory=$false)]
         [int]$Delay = 100
     )
 
@@ -107,8 +107,7 @@ function WithRetry {
         try {
             Invoke-Command -Command $ScriptBlock
             return
-        }
-        catch {
+        } catch {
             $lastException = $_
             Write-Error $_
 
@@ -137,7 +136,7 @@ function InstallPS7 {
             }
         } -Maximum 5 -Delay 100
         # Need to update the path post install
-        $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User") + ";C:\Program Files\PowerShell\7"
+        $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") + ";C:\Program Files\PowerShell\7"
         Write-Host "Done Installing PowerShell 7"
     }
     else {
@@ -165,9 +164,9 @@ function InstallWinGet {
     # check if the Microsoft.Winget.Client module is installed
     $wingetClientPackage = Get-Module -ListAvailable -Name Microsoft.WinGet.Client | Where-Object { $_.Version -ge "1.9.2411" }
     if (!($wingetClientPackage)) {
-        Write-Host "Installing Microsoft.Winget.Client"
-        Install-Module Microsoft.WinGet.Client -Scope $PsInstallScope
-        pwsh.exe -MTA -Command "Install-Module Microsoft.WinGet.Client -Scope $PsInstallScope"
+        Write-Host "Installing Microsoft.Winget.Client -RequiredVersion 1.9.25190"
+        Install-Module Microsoft.WinGet.Client -Scope $PsInstallScope -RequiredVersion 1.9.25190
+        pwsh.exe -MTA -Command "Install-Module Microsoft.WinGet.Client -Scope $PsInstallScope -RequiredVersion 1.9.25190"
         Write-Host "Done Installing Microsoft.Winget.Client"
     }
     else {
@@ -178,7 +177,7 @@ function InstallWinGet {
     $wingetConfigurationPackage = Get-Module -ListAvailable -Name Microsoft.WinGet.Configuration | Where-Object { $_.Version -ge "1.8.1911" }
     if (!($wingetConfigurationPackage)) {
         Write-Host "Installing Microsoft.WinGet.Configuration"
-        pwsh.exe -MTA -Command "Install-Module Microsoft.WinGet.Configuration -AllowPrerelease -Scope $PsInstallScope"
+        pwsh.exe -MTA -Command "Install-Module Microsoft.WinGet.Configuration -Scope $PsInstallScope"
         Write-Host "Done Installing Microsoft.WinGet.Configuration"
     }
     else {
@@ -197,25 +196,6 @@ function InstallWinGet {
     }
 
     if ($PsInstallScope -eq "CurrentUser") {
-        # install Microsoft.VCLibs
-        try {
-            Write-Host "Installing Microsoft.VCLibs"
-            $architecture = "x64"
-            if ($env:PROCESSOR_ARCHITECTURE -eq "ARM64") {
-                $architecture = "arm64"
-            }
-            $MsVcLibs = "$env:TEMP\$([System.IO.Path]::GetRandomFileName())-Microsoft.VCLibs.14.00.Desktop"
-            Write-Host $MsVcLibs
-            Invoke-WebRequest -Uri "https://aka.ms/Microsoft.VCLibs.$architecture.14.00.Desktop.appx" -OutFile $MsVcLibs
-            Add-AppxPackage -Path $MsVcLibs -ForceApplicationShutdown
-            Write-Host "Done Installing Microsoft.VCLibs"
-        }
-        catch {
-            Write-Host "Failed to install Microsoft.VCLibs"
-            Write-Error $_
-        }
-        
-
         $msUiXamlPackage = Get-AppxPackage -Name "Microsoft.UI.Xaml.2.8" | Where-Object { $_.Version -ge "8.2310.30001.0" }
         if (!($msUiXamlPackage)) {
             # instal Microsoft.UI.Xaml
@@ -231,8 +211,7 @@ function InstallWinGet {
                 Expand-Archive $MsUiXamlZip -DestinationPath $MsUiXaml
                 Add-AppxPackage -Path "$($MsUiXaml)\tools\AppX\$($architecture)\Release\Microsoft.UI.Xaml.2.8.appx" -ForceApplicationShutdown
                 Write-Host "Done Installing Microsoft.UI.Xaml"
-            }
-            catch {
+            } catch {
                 Write-Host "Failed to install Microsoft.UI.Xaml"
                 Write-Error $_
             }
@@ -255,7 +234,7 @@ function InstallWinGet {
         }
 
         Add-AppxPackage -RegisterByFamilyName -MainPackage Microsoft.DesktopAppInstaller_8wekyb3d8bbwe
-        $env:Path = [System.Environment]::GetEnvironmentVariable("Path", "Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path", "User") + ";C:\Program Files\PowerShell\7"
+        $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") + ";C:\Program Files\PowerShell\7"
         Write-Host "WinGet version: $(winget -v)"
     }
 
@@ -269,7 +248,7 @@ InstallWinGet
 
 function AppendToUserScript {
     Param(
-        [Parameter(Position = 0, Mandatory = $true)]
+        [Parameter(Position=0, Mandatory=$true)]
         [string]$Content
     )
 
@@ -293,7 +272,7 @@ function EnsureConfigurationFileIsSet ($ConfigurationFile) {
 
     # Ensure the directory exists
     $ConfigurationFileDir = Split-Path -Path $ConfigurationFile
-    if (-Not (Test-Path -Path $ConfigurationFileDir)) {
+    if(-Not (Test-Path -Path $ConfigurationFileDir)) {
         $null = New-Item -ItemType Directory -Path $ConfigurationFileDir
     }
 
@@ -376,7 +355,7 @@ else {
 
         $installCommandBlock = {
             $installPackageCommand = "Install-WinGetPackage -Scope $($scopeFlagValue) -Source winget -Id '$($Package)' $($versionFlag) | ConvertTo-Json -Depth 10 | Tee-Object -FilePath '$($tempOutFile)'"
-            $processCreation = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{CommandLine = "C:\Program Files\PowerShell\7\pwsh.exe $($mtaFlag) -Command `"$($installPackageCommand)`"" }
+            $processCreation = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{CommandLine="C:\Program Files\PowerShell\7\pwsh.exe $($mtaFlag) -Command `"$($installPackageCommand)`""}
             if (!($processCreation) -or !($processCreation.ProcessId)) {
                 Write-Error "Failed to install package. Process creation failed."
                 exit 1
@@ -421,7 +400,7 @@ else {
     elseif ($ConfigurationFile) {
         Write-Host "Running installation of configuration file: $($ConfigurationFile)"
         $applyConfigCommand = "Get-WinGetConfiguration -File '$($ConfigurationFile)' | Invoke-WinGetConfiguration -AcceptConfigurationAgreements | Select-Object -ExpandProperty UnitResults | ConvertTo-Json -Depth 10 | Tee-Object -FilePath '$($tempOutFile)'"
-        $processCreation = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{CommandLine = "C:\Program Files\PowerShell\7\pwsh.exe -Command `"$($applyConfigCommand)`"" }
+        $processCreation = Invoke-CimMethod -ClassName Win32_Process -MethodName Create -Arguments @{CommandLine="C:\Program Files\PowerShell\7\pwsh.exe -Command `"$($applyConfigCommand)`""}
         if (!($processCreation) -or !($processCreation.ProcessId)) {
             Write-Error "Failed to run configuration file installation. Process creation failed."
             exit 1
