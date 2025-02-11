@@ -10,6 +10,9 @@ param devBoxDefinitions array
 @description('Role Definition Ids')
 param roleDefinitions array
 
+@description('Project Environment Types')
+param environmentTypesInfo array
+
 @description('Dev Center')
 resource devCenter 'Microsoft.DevCenter/devcenters@2024-10-01-preview' existing = {
   name: devCenterName
@@ -74,6 +77,18 @@ module devBoxPools 'devBoxPoolsResource.bicep' = [
       projectName: project.name
       devBoxDefinitions: devBoxDefinitions
       networkConnectionName: project.networkConnectionName
+    }
+  }
+]
+
+@description('Project Environment Types')
+module projectEnvironmentTypes '../EnvironmentConfiguration/projectEnvironmentTypeResource.bicep' = [
+  for (project, i) in workloadProjectsInfo: {
+    scope: resourceGroup()
+    name: '${projects[i].name}-environmentTypes'
+    params: {
+      projectName: project.name
+      environmentTypesInfo: environmentTypesInfo
     }
   }
 ]
