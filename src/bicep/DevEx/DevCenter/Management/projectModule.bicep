@@ -89,6 +89,7 @@ module projectEnvironmentTypes '../EnvironmentConfiguration/projectEnvironmentTy
     params: {
       projectName: project.name
       environmentTypesInfo: environmentTypesInfo
+      tags: project.tags
     }
   }
 ]

@@ -4,6 +4,9 @@ param environmentTypesInfo array
 @description('Project Name')
 param projectName string
 
+@description('Tags')
+param tags object
+
 var roles = [
   {
     id: 'b24988ac-6180-42a0-ab88-20f7382dd24c'
@@ -36,6 +39,7 @@ resource envType 'Microsoft.DevCenter/projects/environmentTypes@2024-10-01-previ
   for env in environmentTypesInfo: {
     name: env.name
     parent: project
+    tags: tags
     identity: {
       type: 'SystemAssigned'
     }
