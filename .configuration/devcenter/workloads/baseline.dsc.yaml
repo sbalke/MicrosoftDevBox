@@ -41,7 +41,7 @@ properties:
       settings:
         SetScript: |
           $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
-          winget install Microsoft.AppInstaller --accept-package-agreements --force
+          winget install Microsoft.AppInstaller --accept-package-agreements --accept-source-agreements  --verbose --force
         GetScript: return $false
         TestScript: return $false
       dependsOn:
@@ -55,7 +55,7 @@ properties:
       settings:
         SetScript: |
           $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
-          winget install Microsoft.AppInstallerFileBuilder --accept-package-agreements --force
+          winget install Microsoft.AppInstallerFileBuilder --accept-package-agreements --accept-source-agreements  --verbose --force
         GetScript: return $false
         TestScript: return $false
       dependsOn:
@@ -69,7 +69,7 @@ properties:
       settings:
         SetScript: |
           $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
-          winget install Microsoft.DevHome --accept-package-agreements --verbose --force	
+          winget install Microsoft.DevHome --accept-package-agreements --accept-source-agreements  --verbose --force	
         GetScript: return $false
         TestScript: return $false
       dependsOn:
@@ -148,15 +148,3 @@ properties:
       settings:
         id: Microsoft.WindowsTerminal
         source: winget
-      ### Install Microsoft.Office
-      ### -------------------------------------
-    - resource: Microsoft.WinGet.DSC/WinGetPackage
-      directives:
-        description: Installing Microsoft.Office
-        allowPrerelease: true
-      settings:
-        id: Microsoft.Office
-        source: winget
-      dependsOn:
-        - Microsoft.AppInstaller
-    
