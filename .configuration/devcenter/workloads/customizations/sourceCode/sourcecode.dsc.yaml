@@ -1,0 +1,35 @@
+properties:
+  configurationVersion: 0.2.0
+  ########################################
+  ### RESOURCES: System Configuration
+  ########################################
+  resources:
+      ########################################################
+      ### Updates required before apply configurations
+      ########################################################
+      ### Install PSDscResources
+      ### Enable: WinGet
+      ### Enable: AppInstaller
+      ### Enable: AppInstallerFileBuilder
+      ### Enable: DevHome
+      ### Enable: DevHome Azure Extension
+      ### Enable: DevHome GitHub Extension
+      ### Install: Git
+      ### Install: GitHub.CLI
+      ### Install: GitHub.GitHubDesktop
+      ### Enable: Developer Mode
+      ### Install: Windows Terminal
+      ### Install: Microsoft.Office
+      ########################################################
+    - resource: PSDscResources/Script
+      id: CloneRepository
+      directives:
+        description: Clone Identity Provider and eShop-k8s repositories
+        allowPrerelease: true
+      settings:
+        SetScript: |
+          git clone https://github.com/Evilazaro/IdentityProvider.git c:\Workspaces
+          git clone https://github.com/Evilazaro/eShop-k8s.git c:\Workspaces
+        GetScript: return $false
+        TestScript: return $false
+      
