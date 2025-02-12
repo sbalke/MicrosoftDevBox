@@ -54,5 +54,5 @@ tasks:
     description: Clone Identity Provider and eShop-k8s repositories
     parameters:
       downloadUrl: 'https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/customizations/sourceCode/sourcecode.dsc.yaml'
-      configurationFile: 'C:\WinGetConfig\apis.dsc.yaml'
+      configurationFile: 'C:\WinGetConfig\sourcecode.dsc.yaml'
       runAsUser: true
