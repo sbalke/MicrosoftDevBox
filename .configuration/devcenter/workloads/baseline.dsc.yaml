@@ -41,7 +41,7 @@ properties:
       settings:
         SetScript: |
           $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
-          winget install Microsoft.AppInstaller --accept-package-agreements --silent --force
+          winget install Microsoft.AppInstaller --accept-package-agreements --force
         GetScript: return $false
         TestScript: return $false
       dependsOn:
