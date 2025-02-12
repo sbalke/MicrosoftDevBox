@@ -41,17 +41,3 @@ properties:
         includeRecommended: true
       dependsOn: 
         - Microsoft.VisualStudio.2022.Enterprise
-      ### Updates VS Workloads
-      ### -------------------------------------
-    - resource: PSDscResources/Script
-      id: DotNet.Workloads.Update
-      directives:
-        description: Updates dotne workloads
-      settings:
-        SetScript: |
-          $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User") 
-          dotnet workload update
-        GetScript: return $false
-        TestScript: return $false
-      dependsOn:  
-        - Microsoft.VisualStudio.Workloads
