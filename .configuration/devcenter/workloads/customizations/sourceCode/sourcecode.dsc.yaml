@@ -32,10 +32,13 @@ properties:
           git clone https://github.com/Evilazaro/IdentityProvider.git c:\Workspaces\IdentityProvider
           git clone https://github.com/Evilazaro/eShop-k8s.git c:\Workspaces\eShop-k8s
           dotnet workload update
-          dotnet build c:\Workspaces\IdentityProvider\IdentityProvider.sln
-          dotnet build c:\Workspaces\eShop-k8s\eShop-k8s.sln
-          Restart-Computer -Force
-          dotnet workload update
+          dotnet restore c:\Workspaces\IdentityProvider\Contoso.IdentityProvider.sln
+          dotnet build c:\Workspaces\IdentityProvider\Contoso.IdentityProvider.sln --no-restore
+          dotnet restore c:\Workspaces\eShop-k8s\eShop.Web.slnf
+          dotnet build c:\Workspaces\eShop-k8s\eShop.Web.slnf --no-restore
+          Write-Host "Rebooting the machine to apply changes..."
+          Start-Sleep -Seconds 10
+          Restart-Computer
         GetScript: return $false
         TestScript: return $false
       
