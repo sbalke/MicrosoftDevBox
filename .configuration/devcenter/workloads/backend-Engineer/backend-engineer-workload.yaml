@@ -47,12 +47,12 @@ tasks:
   - name: winget
     description: Install APIs Resources
     parameters:
-      downloadUrl: 'https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/apis/apis.dsc.yaml'
+      downloadUrl: 'https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/customizations/apis/apis.dsc.yaml'
       configurationFile: 'C:\WinGetConfig\apis.dsc.yaml'
       runAsUser: true
   - name: winget
     description: Clone Identity Provider and eShop-k8s repositories
     parameters:
-      downloadUrl: 'https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/sourceCode/sourcecode.dsc.yaml'
+      downloadUrl: 'https://raw.githubusercontent.com/Evilazaro/DevExp-DevBox/refs/heads/main/.configuration/devcenter/workloads/customizations/sourceCode/sourcecode.dsc.yaml'
       configurationFile: 'C:\WinGetConfig\apis.dsc.yaml'
       runAsUser: true
