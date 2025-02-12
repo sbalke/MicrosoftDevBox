@@ -77,7 +77,6 @@ properties:
               "redhat.vscode-yaml",
               "visualstudioonlineapplicationinsights.application-insights"
           )
-
           foreach ($extension in $extensions) {
               code --install-extension $extension
               Write-Host "Installed: $extension"
